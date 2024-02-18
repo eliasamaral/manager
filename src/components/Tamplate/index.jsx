@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import { Layout, theme, Menu } from "antd";
+import { Layout, theme, Menu, Typography, Divider } from "antd";
 
 import { HeaderBar as Header } from "../Header";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +15,7 @@ import {
 } from "@ant-design/icons";
 
 const { Content, Sider } = Layout;
+const { Title } = Typography;
 
 function Tamplate() {
   const {
@@ -39,6 +40,11 @@ function Tamplate() {
           bottom: 0,
         }}
       >
+        <div style={{ display: "flex", padding: "20px 20px" }}>
+          <Title style={{ margin: 0, color: "#fff" }} level={3}>
+            Manager
+          </Title>
+        </div>
         <Menu
           theme="dark"
           mode="inline"
@@ -89,7 +95,7 @@ function Tamplate() {
               ],
             },
           ]}
-        />
+        ></Menu>
       </Sider>
 
       <Layout

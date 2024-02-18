@@ -44,7 +44,7 @@ export default function Home() {
                   lng: parseFloat(point.coord.y),
                 }}
               >
-                <EnvironmentFilled style={{ fontSize: "3em", color: "#0000ff"}} />
+                <EnvironmentFilled style={{ fontSize: "3em", color: "#000077"}} />
               </AdvancedMarker>
             </div>
           ))}
