@@ -6,13 +6,14 @@ import Materiais from "../../Tabelas/Materiais";
 import Pendencias from "../../Tabelas/Pendencias";
 
 function Tab({ data }) {
-  const { RDODigital } = data;
+
+
 
   const items = [
     {
       key: "1",
       label: `Serviços`,
-      children: <Serviços data={RDODigital} />,
+      children: <Serviços data={data} />,
     },
     {
       key: "2",

@@ -87,7 +87,6 @@ export const GET_PROJETO = gql`
       srv {
         codigo
         descricao
-        id
         qntOrcada
       }
       pontos {
@@ -114,6 +113,15 @@ export const GET_PROJETO = gql`
         }
       }
     }
+  }
+`;
+
+export const UPDATE_PROJETO = gql`
+  mutation updateProjeto(
+    $updateProjetoId: ID!
+    $updateProjetoData: ProjetoInput
+  ) {
+    updateProjeto(id: $updateProjetoId, data: $updateProjetoData)
   }
 `;
 
