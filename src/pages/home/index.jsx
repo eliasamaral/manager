@@ -3,9 +3,13 @@ import { APIProvider, Map, AdvancedMarker } from "@vis.gl/react-google-maps";
 import { GET_PROJETOS } from "../../Schemas";
 import { useQuery } from "@apollo/client";
 import { Spin } from "antd";
-import { EnvironmentFilled } from "@ant-design/icons";
+import { PinLocation, Legenda } from "./styles";
+import { Typography } from "antd";
+
 const GOOGLE_MAPS_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY;
 const MAP_STYLE_ID = import.meta.env.VITE_MAP_STYLE_ID;
+
+const { Text } = Typography;
 
 export default function Home() {
   const { data, loading } = useQuery(GET_PROJETOS);
@@ -30,6 +34,7 @@ export default function Home() {
       <div style={{ height: "80vh" }}>
         <Map
           mapId={MAP_STYLE_ID}
+          minZoom={8.5}
           defaultCenter={{
             lat: -20.8621244,
             lng: -40.9345395,
@@ -44,11 +49,19 @@ export default function Home() {
                   lng: parseFloat(point.coord.y),
                 }}
               >
-                <EnvironmentFilled style={{ fontSize: "3em", color: "#000077"}} />
+                <PinLocation status={point.status} />
               </AdvancedMarker>
             </div>
           ))}
         </Map>
+        <Legenda>
+          <PinLocation style={{ width: "15px", height: "15px" }} status={1} />
+          <Text>Executando</Text>
+          <PinLocation style={{ width: "15px", height: "15px" }} status={2} />
+          <Text>Balanço</Text>
+          <PinLocation style={{ width: "15px", height: "15px" }} status={3} />
+          <Text>Pagamento</Text>
+        </Legenda>
       </div>
     </APIProvider>
   );
