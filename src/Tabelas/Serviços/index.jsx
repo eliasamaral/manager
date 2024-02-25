@@ -111,7 +111,7 @@ function Serviços({ data }) {
         columns={columns}
         rowKey={(record) => record.codigo}
         dataSource={data.srv}
-        scroll={{ y: "40vh" }}
+        scroll={{ y: "35vh" }}
         pagination={false}
       />
     </>
