@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { APIProvider, Map, AdvancedMarker } from "@vis.gl/react-google-maps";
 import { GET_PROJETOS } from "../../Schemas";
 import { useQuery } from "@apollo/client";
+import { useNavigate } from "react-router-dom";
+
 import { Spin } from "antd";
 import { PinLocation, Legenda } from "./styles";
 import { Typography } from "antd";
@@ -13,6 +15,8 @@ const { Text } = Typography;
 
 export default function Home() {
   const { data, loading } = useQuery(GET_PROJETOS);
+  const navigate = useNavigate();
+
 
   if (loading) {
     return (
@@ -27,6 +31,10 @@ export default function Home() {
         <Spin />
       </div>
     );
+  }
+
+  const handleclick = ({point}) => {
+    navigate(`/projeto/${point.projeto}`);
   }
 
   return (
@@ -44,6 +52,7 @@ export default function Home() {
           {data.getProjetos.map((point, index) => (
             <div key={index}>
               <AdvancedMarker
+              onClick={() => handleclick({point}) }
                 position={{
                   lat: parseFloat(point.coord.x),
                   lng: parseFloat(point.coord.y),
