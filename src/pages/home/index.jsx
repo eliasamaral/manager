@@ -17,7 +17,6 @@ export default function Home() {
   const { data, loading } = useQuery(GET_PROJETOS);
   const navigate = useNavigate();
 
-
   if (loading) {
     return (
       <div
@@ -33,9 +32,9 @@ export default function Home() {
     );
   }
 
-  const handleclick = ({point}) => {
+  const handleclick = ({ point }) => {
     navigate(`/projeto/${point.projeto}`);
-  }
+  };
 
   return (
     <APIProvider apiKey={GOOGLE_MAPS_KEY}>
@@ -52,7 +51,8 @@ export default function Home() {
           {data.getProjetos.map((point, index) => (
             <div key={index}>
               <AdvancedMarker
-              onClick={() => handleclick({point}) }
+              title={`${point.projeto} ${point.local}`}
+                onClick={() => handleclick({ point })}
                 position={{
                   lat: parseFloat(point.coord.x),
                   lng: parseFloat(point.coord.y),
