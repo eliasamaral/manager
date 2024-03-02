@@ -5,7 +5,6 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { AuthProvider } from "./utility/context/authContext";
 
-
 import { GlobalStyle } from "./GlobalStyle";
 
 import Login from "./pages/login";
@@ -20,6 +19,7 @@ import Contracts from "./pages/contracts";
 import PontoProvider from "./utility/context/pontoContext";
 import ProjectProgress from "./pages/project-progress";
 import CadastrarUsuario from "./pages/create-user";
+// import Pagamentos from "./pages/pagamentos";
 
 function App() {
   return (
@@ -42,6 +42,7 @@ function App() {
                   <Route path="/codigos" element={<Codigos />} />
                   <Route path="/contratos" element={<Contracts />} />
                   <Route path="/kanban" element={<ProjectProgress />} />
+                  {/* <Route path="/pagamentos" element={<Pagamentos />} /> */}
                   <Route
                     path="/cadastrar-usuario"
                     element={<CadastrarUsuario />}

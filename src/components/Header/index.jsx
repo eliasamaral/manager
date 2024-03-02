@@ -33,6 +33,8 @@ export function HeaderBar() {
     "/pagamentos": "Pagamentos",
     "/kanban": "Kanban",
     "/cadastrar-usuario": "Cadastrar Usuario",
+    "/pagamentos": "Pagamentos",
+
 
   };
 

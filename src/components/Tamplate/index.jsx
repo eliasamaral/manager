@@ -12,6 +12,7 @@ import {
   ToolOutlined,
   AuditOutlined,
   GlobalOutlined,
+  EuroOutlined,
 } from "@ant-design/icons";
 
 const { Content, Sider } = Layout;
@@ -73,6 +74,11 @@ function Tamplate() {
               key: "/contratos",
               icon: <AuditOutlined />,
             },
+            // {
+            //   label: "Pagamentos",
+            //   key: "/pagamentos",
+            //   icon:<EuroOutlined />,
+            // },
 
             {
               label: "Administrador",
