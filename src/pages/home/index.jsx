@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
+import { Hammer, NotepadText, DollarSign } from "lucide-react";
 import { APIProvider, Map, AdvancedMarker } from "@vis.gl/react-google-maps";
 import { GET_PROJETOS } from "../../Schemas";
 import { useQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 
 import { Spin } from "antd";
-import { PinLocation, Legenda } from "./styles";
+import { InconContainer, Legenda } from "./styles";
 import { Typography } from "antd";
 
 const GOOGLE_MAPS_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY;
@@ -51,24 +52,54 @@ export default function Home() {
           {data.getProjetos.map((point, index) => (
             <div key={index}>
               <AdvancedMarker
-              title={`${point.projeto} ${point.local}`}
+                title={`${point.projeto} ${point.local}`}
                 onClick={() => handleclick({ point })}
                 position={{
                   lat: parseFloat(point.coord.x),
                   lng: parseFloat(point.coord.y),
                 }}
               >
-                <PinLocation status={point.status} />
+                {(() => {
+                  switch (point.status) {
+                    case 1:
+                      return (
+                        <InconContainer>
+                          <Hammer color="#fff" size={14} />
+                        </InconContainer>
+                      );
+                    case 2:
+                      return (
+                        <InconContainer>
+                          <NotepadText color="#fff" size={14} />
+                        </InconContainer>
+                      );
+                    case 3:
+                      return (
+                        <InconContainer>
+                          <DollarSign color="#fff" size={14} />
+                        </InconContainer>
+                      );
+
+                    default:
+                      return null;
+                  }
+                })()}
               </AdvancedMarker>
             </div>
           ))}
         </Map>
         <Legenda>
-          <PinLocation style={{ width: "15px", height: "15px" }} status={1} />
+          <InconContainer>
+            <Hammer color="#fff" size={14} />
+          </InconContainer>
           <Text>Executando</Text>
-          <PinLocation style={{ width: "15px", height: "15px" }} status={2} />
+          <InconContainer>
+            <NotepadText color="#fff" size={14} />
+          </InconContainer>
           <Text>Balanço</Text>
-          <PinLocation style={{ width: "15px", height: "15px" }} status={3} />
+          <InconContainer>
+            <DollarSign color="#fff" size={14} />
+          </InconContainer>
           <Text>Pagamento</Text>
         </Legenda>
       </div>

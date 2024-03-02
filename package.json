@@ -17,6 +17,7 @@
     "@vis.gl/react-google-maps": "^0.7.0",
     "antd": "^5.14.1",
     "jwt-decode": "^4.0.0",
+    "lucide-react": "^0.344.0",
     "react": "^18.2.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
