@@ -41,24 +41,37 @@ export const GET_RDO = gql`
   query ($_id: ID!) {
     getRDO(_id: $_id) {
       _id
+      projeto
+      local
+      diagrama
+      createdAt
+      encarregado
+      dataDaProducao
+      isFinal
+      observacoes
+      fichaTrafo {
+        estf
+        estfsucata
+        nSerie
+        nSucataSerie
+        NA
+        NB
+        NC
+        AB
+        AC
+        BC
+      }
+
       clima {
         manha
         tarde
       }
-      createdAt
-      dataDaProducao
-      diagrama
-      encarregado
-      isFinal
-      local
       maoDeObra {
         auxiliar
         eletricista
         encarregado
         motorista
       }
-      observacoes
-      projeto
       servicos {
         _id
         codigo

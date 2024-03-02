@@ -1,5 +1,13 @@
 import React from "react";
-import { Descriptions, Space, Spin, Table, Tag } from "antd";
+import {
+  Descriptions,
+  Divider,
+  Space,
+  Spin,
+  Table,
+  Tag,
+  Typography,
+} from "antd";
 import { useQuery } from "@apollo/client";
 import { GET_RDO } from "../../Schemas";
 
@@ -50,14 +58,13 @@ export default function RDODigital({ RDOfiltrado }) {
   }
 
   const { getRDO } = data;
-  
 
   return (
     <Space
       direction="vertical"
       style={{
         display: "flex",
-        width: "600px",
+        width: "750px",
         height: "800px",
         padding: "30px",
 
@@ -108,6 +115,40 @@ export default function RDODigital({ RDOfiltrado }) {
       <Descriptions>
         <Descriptions.Item>{getRDO.observacoes}</Descriptions.Item>
       </Descriptions>
+
+      <Divider
+        orientation={"left"}
+        children={<Typography.Text>Ficha equipamento</Typography.Text>}
+      ></Divider>
+
+      <Descriptions column={4} size="small">
+        <Descriptions.Item label="ESTF">
+          {getRDO.fichaTrafo.estf}
+        </Descriptions.Item>
+        <Descriptions.Item label="N° Serie">
+          {getRDO.fichaTrafo.nSerie}
+        </Descriptions.Item>
+        <Descriptions.Item label="ESTF Sucata">
+          {getRDO.fichaTrafo.estfSucata}
+        </Descriptions.Item>
+        <Descriptions.Item label="N° Sucata">
+          {getRDO.fichaTrafo.nSucataSerie}
+        </Descriptions.Item>
+      </Descriptions>
+
+      <Descriptions size="small">
+        <Descriptions.Item label="NA">{getRDO.fichaTrafo.NA}</Descriptions.Item>
+        <Descriptions.Item label="NB">{getRDO.fichaTrafo.NB}</Descriptions.Item>
+        <Descriptions.Item label="NC">{getRDO.fichaTrafo.NC}</Descriptions.Item>
+        <Descriptions.Item label="AB">{getRDO.fichaTrafo.AB}</Descriptions.Item>
+        <Descriptions.Item label="AC">{getRDO.fichaTrafo.AC}</Descriptions.Item>
+        <Descriptions.Item label="BC">{getRDO.fichaTrafo.BC}</Descriptions.Item>
+      </Descriptions>
+      <Divider
+        orientation={"left"}
+        children={<Typography.Text>Serviços executados</Typography.Text>}
+      ></Divider>
+
       <Table
         dataSource={getRDO.servicos}
         rowKey={(record) => record._id}
