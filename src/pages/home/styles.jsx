@@ -9,10 +9,3 @@ export const InconContainer = styled.button`
   background-color: #000;
   border-radius: 15px;
 `;
-
-export const Legenda = styled.div`
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-  align-items: center;
-`;

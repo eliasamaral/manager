@@ -1,18 +1,15 @@
 import React from "react";
-import { Hammer, NotepadText, DollarSign } from "lucide-react";
 import { APIProvider, Map, AdvancedMarker } from "@vis.gl/react-google-maps";
 import { GET_PROJETOS } from "../../Schemas";
 import { useQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 
-import { Spin } from "antd";
-import { InconContainer, Legenda } from "./styles";
-import { Typography } from "antd";
+import { Hammer, NotepadText, DollarSign } from "lucide-react";
+import { Spin, Card, Col, Row, Statistic } from "antd";
+import { InconContainer } from "./styles";
 
 const GOOGLE_MAPS_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY;
 const MAP_STYLE_ID = import.meta.env.VITE_MAP_STYLE_ID;
-
-const { Text } = Typography;
 
 export default function Home() {
   const { data, loading } = useQuery(GET_PROJETOS);
@@ -33,76 +30,116 @@ export default function Home() {
     );
   }
 
+  const { getProjetos } = data;
+
+  function contarStatus(getProjetos) {
+    const contador = {};
+    getProjetos.forEach((projeto) => {
+      const status = projeto.status;
+      contador[status] = (contador[status] || 0) + 1;
+    });
+    return contador;
+  }
+
+  const contagemStatus = contarStatus(getProjetos);
+
   const handleclick = ({ point }) => {
     navigate(`/projeto/${point.projeto}`);
   };
 
   return (
-    <APIProvider apiKey={GOOGLE_MAPS_KEY}>
-      <div style={{ height: "80vh" }}>
-        <Map
-          mapId={MAP_STYLE_ID}
-          minZoom={8.5}
-          defaultCenter={{
-            lat: -20.8621244,
-            lng: -40.9345395,
-          }}
-          defaultZoom={8}
-        >
-          {data.getProjetos.map((point, index) => (
-            <div key={index}>
-              <AdvancedMarker
-                title={`${point.projeto} ${point.local}`}
-                onClick={() => handleclick({ point })}
-                position={{
-                  lat: parseFloat(point.coord.x),
-                  lng: parseFloat(point.coord.y),
-                }}
-              >
-                {(() => {
-                  switch (point.status) {
-                    case 1:
-                      return (
-                        <InconContainer>
-                          <Hammer color="#fff" size={14} />
-                        </InconContainer>
-                      );
-                    case 2:
-                      return (
-                        <InconContainer>
-                          <NotepadText color="#fff" size={14} />
-                        </InconContainer>
-                      );
-                    case 3:
-                      return (
-                        <InconContainer>
-                          <DollarSign color="#fff" size={14} />
-                        </InconContainer>
-                      );
+    <>
+      <Row gutter={16} style={{ marginBottom: "20px" }}>
+        <Col span={8}>
+          <Card>
+            <Statistic
+              title="Execução"
+              value={contagemStatus[1]}
+              valueStyle={{
+                color: "#5c42d3",
+              }}
+              prefix={<Hammer />}
+            />
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card>
+            <Statistic
+              title="Balanço"
+              value={contagemStatus[2]}
+              valueStyle={{
+                color: "#5c42d3",
+              }}
+              prefix={<NotepadText />}
+            />
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card>
+            <Statistic
+              title="Pagamento"
+              value={contagemStatus[3]}
+              valueStyle={{
+                color: "#5c42d3",
+              }}
+              prefix={<DollarSign />}
+            />
+          </Card>
+        </Col>
+      </Row>
 
-                    default:
-                      return null;
-                  }
-                })()}
-              </AdvancedMarker>
-            </div>
-          ))}
-        </Map>
-        <Legenda>
-          <InconContainer>
-            <Hammer color="#fff" size={14} />
-          </InconContainer>
-          <Text>Executando</Text>
-          <InconContainer>
-            <NotepadText color="#fff" size={14} />
-          </InconContainer>
-          <Text>Balanço</Text>
-          <InconContainer>
-            <DollarSign color="#fff" size={14} />
-          </InconContainer>
-          <Text>Pagamento</Text>
-        </Legenda>
-      </div>
-    </APIProvider>
+      <APIProvider apiKey={GOOGLE_MAPS_KEY}>
+        <div style={{ height: "70vh" }}>
+          <Map
+            mapId={MAP_STYLE_ID}
+            minZoom={8.5}
+            defaultCenter={{
+              lat: -20.8621244,
+              lng: -40.9345395,
+            }}
+            defaultZoom={10}
+          >
+            {getProjetos.map((point, index) => (
+              <div key={index}>
+                <AdvancedMarker
+                  title={`${point.projeto} ${point.local}`}
+                  onClick={() => handleclick({ point })}
+                  position={{
+                    lat: parseFloat(point.coord.x),
+                    lng: parseFloat(point.coord.y),
+                  }}
+                >
+                  {(() => {
+                    switch (point.status) {
+                      case 1:
+                        return (
+                          <InconContainer>
+                            <Hammer color="#fff" size={14} />
+                          </InconContainer>
+                        );
+                      case 2:
+                        return (
+                          <InconContainer>
+                            <NotepadText color="#fff" size={14} />
+                          </InconContainer>
+                        );
+                      case 3:
+                        return (
+                          <InconContainer>
+                            <DollarSign color="#fff" size={14} />
+                          </InconContainer>
+                        );
+
+                      default:
+                        return null;
+                    }
+                  })()}
+                </AdvancedMarker>
+              </div>
+            ))}
+          </Map>
+        </div>
+      </APIProvider>
+    </>
   );
 }
