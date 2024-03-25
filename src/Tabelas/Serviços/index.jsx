@@ -1,21 +1,21 @@
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { PlusOutlined } from "@ant-design/icons";
-import { Space, Table, Button } from "antd";
-import { Span, Input } from "./styles";
+import * as z from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { PlusOutlined } from '@ant-design/icons'
+import { Space, Table, Button } from 'antd'
+import { Span, Input } from './styles'
 
-import { UPDATE_PROJETO, GET_PROJETO } from "../../Schemas";
-import { useMutation } from "@apollo/client";
+import { UPDATE_PROJETO, GET_PROJETO } from '../../Schemas'
+import { useMutation } from '@apollo/client'
 
 function Serviços({ data }) {
-  const [updateProjeto, { loading, error }] = useMutation(UPDATE_PROJETO);
+  const [updateProjeto, { loading, error }] = useMutation(UPDATE_PROJETO)
 
   const Schema = z.object({
-    codigo: z.coerce.number().min(1, "Obrigatório"),
-    descricao: z.string().trim().min(1, "Obrigatório"),
-    qntOrcada: z.coerce.number().min(1, "Obrigatório"),
-  });
+    codigo: z.coerce.number().min(1, 'Obrigatório'),
+    descricao: z.string().trim().min(1, 'Obrigatório'),
+    qntOrcada: z.coerce.number().min(1, 'Obrigatório'),
+  })
 
   const {
     handleSubmit,
@@ -23,17 +23,17 @@ function Serviços({ data }) {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(Schema),
-  });
+  })
 
   const handleFormSubmit = async (e) => {
-    let removeTypename = data.srv.map((s) => {
-      const { __typename, ...rest } = s;
-      return rest;
-    });
+    const removeTypename = data.srv.map((s) => {
+      const { __typename, ...rest } = s
+      return rest
+    })
 
-    let projetoInput = {
+    const projetoInput = {
       srv: [...removeTypename, e],
-    };
+    }
 
     try {
       await updateProjeto({
@@ -42,59 +42,59 @@ function Serviços({ data }) {
           updateProjetoData: projetoInput,
         },
         refetchQueries: [GET_PROJETO],
-      });
+      })
     } catch (error) {
-      console.log("Error during form submission:", error);
+      console.log('Error during form submission:', error)
     }
-  };
+  }
 
   const columns = [
     {
-      title: "Codigo",
-      dataIndex: "codigo",
-      key: "1",
+      title: 'Codigo',
+      dataIndex: 'codigo',
+      key: '1',
     },
     {
-      title: "Descrição",
-      dataIndex: "descricao",
-      key: "descricao",
+      title: 'Descrição',
+      dataIndex: 'descricao',
+      key: 'descricao',
     },
     {
-      title: "Orçado",
-      dataIndex: "qntOrcada",
-      key: "qntOrcada",
+      title: 'Orçado',
+      dataIndex: 'qntOrcada',
+      key: 'qntOrcada',
     },
-  ];
+  ]
 
   return (
     <>
       <form onSubmit={handleSubmit(handleFormSubmit)}>
-        <Space wrap style={{ marginBottom: "40px" }}>
+        <Space wrap style={{ marginBottom: '40px' }}>
           <Span>
             <Input
-              {...register("codigo")}
+              {...register('codigo')}
               type="number"
               placeholder="Código"
-              style={{ width: "100px" }}
+              style={{ width: '100px' }}
             />
             {errors.codigo && <Span>{errors.codigo.message}</Span>}
           </Span>
           <Span>
             <Input
-              {...register("descricao")}
+              {...register('descricao')}
               type="text"
               placeholder="Descrição"
-              style={{ width: "300px" }}
+              style={{ width: '300px' }}
             />
             {errors.descricao && <Span>{errors.descricao.message}</Span>}
           </Span>
 
           <Span>
             <Input
-              {...register("qntOrcada")}
+              {...register('qntOrcada')}
               type="number"
               placeholder="Orçado"
-              style={{ width: "110px" }}
+              style={{ width: '110px' }}
             />
             {errors.qntOrcada && <Span>{errors.qntOrcada.message}</Span>}
           </Span>
@@ -111,11 +111,11 @@ function Serviços({ data }) {
         columns={columns}
         rowKey={(record) => record.codigo}
         dataSource={data.srv}
-        scroll={{ y: "35vh" }}
+        scroll={{ y: '35vh' }}
         pagination={false}
       />
     </>
-  );
+  )
 }
 
-export default Serviços;
+export default Serviços

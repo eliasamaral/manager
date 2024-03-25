@@ -1,24 +1,24 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { PrivateRoute } from "./routes";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { AuthProvider } from "./utility/context/authContext";
+import React from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { PrivateRoute } from './routes'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { AuthProvider } from './utility/context/authContext'
 
-import { GlobalStyle } from "./GlobalStyle";
+import { GlobalStyle } from './GlobalStyle'
 
-import Login from "./pages/login";
-import Home from "./pages/home";
-import RDO from "./pages/RDO";
-import Projects from "./pages/projects";
-import CreateProject from "./pages/create-project";
-import Project from "./pages/project";
-import Codigos from "./Tabelas/Codigos";
-import Tamplate from "./components/Tamplate";
-import Contracts from "./pages/contracts";
-import PontoProvider from "./utility/context/pontoContext";
-import ProjectProgress from "./pages/project-progress";
-import CadastrarUsuario from "./pages/create-user";
+import Login from './pages/login'
+import Home from './pages/home'
+import RDO from './pages/RDO'
+import Projects from './pages/projects'
+import CreateProject from './pages/create-project'
+import Project from './pages/project'
+import Codigos from './Tabelas/Codigos'
+import Tamplate from './components/Tamplate'
+import Contracts from './pages/contracts'
+import PontoProvider from './utility/context/pontoContext'
+import ProjectProgress from './pages/project-progress'
+import CadastrarUsuario from './pages/create-user'
 // import Pagamentos from "./pages/pagamentos";
 
 function App() {
@@ -55,7 +55,7 @@ function App() {
         </PontoProvider>
       </DndProvider>
     </AuthProvider>
-  );
+  )
 }
 
-export default App;
+export default App

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import {
   Descriptions,
   Divider,
@@ -7,75 +7,75 @@ import {
   Table,
   Tag,
   Typography,
-} from "antd";
-import { useQuery } from "@apollo/client";
-import { GET_RDO } from "../../Schemas";
+} from 'antd'
+import { useQuery } from '@apollo/client'
+import { GET_RDO } from '../../Schemas'
 
 const columns = [
   {
-    title: "Código",
-    dataIndex: "codigo",
-    key: "codigo",
-    width: "100px",
+    title: 'Código',
+    dataIndex: 'codigo',
+    key: 'codigo',
+    width: '100px',
   },
   {
-    title: "Descrição",
-    dataIndex: "descricao",
-    key: "descricao",
+    title: 'Descrição',
+    dataIndex: 'descricao',
+    key: 'descricao',
   },
   {
-    title: "Quantidade",
-    dataIndex: "quantidade",
-    key: "quantidade",
-    width: "100px",
+    title: 'Quantidade',
+    dataIndex: 'quantidade',
+    key: 'quantidade',
+    width: '100px',
   },
-];
+]
 
-const colorStatus = ["#108ee9", "#ec1c24"];
+const colorStatus = ['#108ee9', '#ec1c24']
 
 export default function RDODigital({ RDOfiltrado }) {
-  const { _id } = RDOfiltrado;
+  const { _id } = RDOfiltrado
 
   const { loading, data } = useQuery(GET_RDO, {
     variables: { _id },
-  });
+  })
 
   if (loading) {
     return (
       <Space
         style={{
-          display: "flex",
-          height: "100vh",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "600px",
-          marginInline: "10px",
+          display: 'flex',
+          height: '100vh',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '600px',
+          marginInline: '10px',
         }}
       >
         <Spin />
       </Space>
-    );
+    )
   }
 
-  const { getRDO } = data;
+  const { getRDO } = data
 
   return (
     <Space
       direction="vertical"
       style={{
-        display: "flex",
-        width: "750px",
-        height: "800px",
-        padding: "30px",
+        display: 'flex',
+        width: '750px',
+        height: '800px',
+        padding: '30px',
 
-        backgroundColor: "#f5f5f5cc",
+        backgroundColor: '#f5f5f5cc',
       }}
     >
       <Tag
         color={getRDO.isFinal ? colorStatus[1] : colorStatus[0]}
-        style={{ marginBottom: "5px" }}
+        style={{ marginBottom: '5px' }}
       >
-        {getRDO.isFinal ? "Final" : "Parcial"}
+        {getRDO.isFinal ? 'Final' : 'Parcial'}
       </Tag>
       <Descriptions title="RDO Digital">
         <Descriptions.Item label="Projeto">{getRDO.projeto}</Descriptions.Item>
@@ -117,7 +117,7 @@ export default function RDODigital({ RDOfiltrado }) {
       </Descriptions>
 
       <Divider
-        orientation={"left"}
+        orientation={'left'}
         children={<Typography.Text>Ficha equipamento</Typography.Text>}
       ></Divider>
 
@@ -145,7 +145,7 @@ export default function RDODigital({ RDOfiltrado }) {
         <Descriptions.Item label="BC">{getRDO.fichaTrafo.BC}</Descriptions.Item>
       </Descriptions>
       <Divider
-        orientation={"left"}
+        orientation={'left'}
         children={<Typography.Text>Serviços executados</Typography.Text>}
       ></Divider>
 
@@ -154,9 +154,9 @@ export default function RDODigital({ RDOfiltrado }) {
         rowKey={(record) => record._id}
         columns={columns}
         size="small"
-        scroll={{ y: "30vh" }}
-        footer={() => "Valor do relatório: R$ 0.000,00"}
+        scroll={{ y: '30vh' }}
+        footer={() => 'Valor do relatório: R$ 0.000,00'}
       />
     </Space>
-  );
+  )
 }

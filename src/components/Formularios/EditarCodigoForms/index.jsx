@@ -1,13 +1,13 @@
-import { Button, Form, Input, Select } from "antd";
+import { Button, Form, Input, Select } from 'antd'
 
-const { Option } = Select;
+const { Option } = Select
 
 const onFinish = (values) => {
-  console.log("Success:", values);
-};
+  console.log('Success:', values)
+}
 const onFinishFailed = (errorInfo) => {
-  console.log("Failed:", errorInfo);
-};
+  console.log('Failed:', errorInfo)
+}
 
 const EditarCodigoForms = () => (
   <Form
@@ -34,7 +34,7 @@ const EditarCodigoForms = () => (
       rules={[
         {
           required: true,
-          message: "Digite um codigo.",
+          message: 'Digite um codigo.',
         },
       ]}
     >
@@ -47,7 +47,7 @@ const EditarCodigoForms = () => (
       rules={[
         {
           required: true,
-          message: "Digite uma descrição.",
+          message: 'Digite uma descrição.',
         },
       ]}
     >
@@ -60,7 +60,7 @@ const EditarCodigoForms = () => (
       rules={[
         {
           required: true,
-          message: "Selecione o tipo.",
+          message: 'Selecione o tipo.',
         },
       ]}
     >
@@ -90,5 +90,5 @@ const EditarCodigoForms = () => (
       </Button>
     </Form.Item>
   </Form>
-);
-export default EditarCodigoForms;
+)
+export default EditarCodigoForms

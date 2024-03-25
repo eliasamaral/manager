@@ -1,44 +1,44 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { Button, Descriptions, Radio, Space, Table, Divider } from "antd";
-import { Span, Input, Select } from "./styles";
+import React, { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { Button, Space, Table, Divider } from 'antd'
+import { Span, Input, Select } from './styles'
 
-import { FileExcelOutlined } from "@ant-design/icons";
+import { FileExcelOutlined } from '@ant-design/icons'
 
-import { processarArquivo, filter } from "../../utility/process_ads_data";
+import { extractServicesAndMaterialsADS } from '../../utility/process_ads_data'
 
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { CREATE_PROJETO, GET_PROJETOS, GET_CONTRATOS } from "../../Schemas";
-import { useMutation, useQuery } from "@apollo/client";
-import { useNavigate } from "react-router-dom";
+import * as z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { CREATE_PROJETO, GET_PROJETOS, GET_CONTRATOS } from '../../Schemas'
+import { useMutation, useQuery } from '@apollo/client'
+import { useNavigate } from 'react-router-dom'
 
 const columns = [
   {
-    title: "Código",
-    dataIndex: "codigo",
-    key: "codigo",
+    title: 'Código',
+    dataIndex: 'codigo',
+    key: 'codigo',
     sorter: {
       compare: (a, b) => a.codigo - b.codigo,
       multiple: 2,
     },
   },
   {
-    title: "Descrição",
-    dataIndex: "descricao",
-    key: "descricao",
+    title: 'Descrição',
+    dataIndex: 'descricao',
+    key: 'descricao',
   },
   {
-    title: "Planejado",
-    dataIndex: "qntOrcada",
-    key: "qntOrcada",
+    title: 'Planejado',
+    dataIndex: 'qntOrcada',
+    key: 'qntOrcada',
 
     sorter: {
       compare: (a, b) => a.qntOrcada - b.qntOrcada,
       multiple: 2,
     },
   },
-];
+]
 
 const Schema = z.object({
   projeto: z.coerce.number(),
@@ -46,54 +46,53 @@ const Schema = z.object({
   contrato: z.coerce.number(),
   cidade: z
     .string()
-    .nonempty("Item obrigatório.")
+    .nonempty('Item obrigatório.')
     .transform((name) => {
       return name
         .trim()
-        .split(" ")
+        .split(' ')
         .map((word) => {
-          return word[0].toLocaleUpperCase().concat(word.substring(1));
+          return word[0].toLocaleUpperCase().concat(word.substring(1))
         })
-        .join(" ");
+        .join(' ')
     }),
   local: z
     .string()
-    .nonempty("Item obrigatório.")
+    .nonempty('Item obrigatório.')
     .transform((name) => {
       return name
         .trim()
-        .split(" ")
+        .split(' ')
         .map((word) => {
-          return word[0].toLocaleUpperCase().concat(word.substring(1));
+          return word[0].toLocaleUpperCase().concat(word.substring(1))
         })
-        .join(" ");
+        .join(' ')
     }),
 
   tipo: z
     .string()
-    .nonempty("Item obrigatório.")
+    .nonempty('Item obrigatório.')
     .transform((name) => {
       return name
         .trim()
-        .split(" ")
+        .split(' ')
         .map((word) => {
-          return word[0].toLocaleUpperCase().concat(word.substring(1));
+          return word[0].toLocaleUpperCase().concat(word.substring(1))
         })
-        .join(" ");
+        .join(' ')
     }),
 
   coord: z.object({
     x: z.string().trim(),
     y: z.string().trim(),
   }),
-
-});
+})
 
 export default function CreateProject() {
-  const navigate = useNavigate();
-  const [createProjeto, { loading, error }] = useMutation(CREATE_PROJETO);
+  const navigate = useNavigate()
+  const [createProjeto, { loading, error }] = useMutation(CREATE_PROJETO)
   const { data: dataContratos, loading: loadingContratos } =
-    useQuery(GET_CONTRATOS);
+    useQuery(GET_CONTRATOS)
 
   const {
     handleSubmit,
@@ -101,67 +100,59 @@ export default function CreateProject() {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(Schema),
-  });
+  })
 
   const handleFormSubmit = async (e) => {
     try {
-      const projetoInput = { ...e, srv: dadosFiltrados };
+      const projetoInput = { ...e, srv: dadosFiltrados.servicos }
 
       await createProjeto({
         variables: { projetoInput },
         refetchQueries: [GET_PROJETOS],
-      });
+      })
 
-      navigate("/projetos");
+      navigate('/projetos')
     } catch (error) {
-      console.error("Error during form submission:", error);
-      navigate("/projetos");
+      console.error('Error during form submission:', error)
+      navigate('/projetos')
     }
-  };
+  }
 
-  const [unidade, setUnidade] = useState();
-  const [dadosFiltrados, setDadosFiltrados] = useState([]);
-  const [arquivo, setArquivo] = useState(null);
+  const [dadosFiltrados, setDadosFiltrados] = useState([])
+  const [arquivo, setArquivo] = useState(null)
 
   const handleSelecionarArquivo = (event) => {
-    setArquivo(event);
-  };
+    setArquivo(event)
+  }
 
   const handleArmazenarArquivo = () => {
-    if (!arquivo || !unidade) {
-      console.error("Selecione um arquivo e uma unidade antes de armazenar.");
-      return;
-    }
-
-    processarArquivo(arquivo)
-      .then((dados) => {
-        const filtro = filter(dados, unidade);
-
-        setDadosFiltrados(filtro);
+    extractServicesAndMaterialsADS(arquivo)
+      .then((value) => {
+        setDadosFiltrados(value)
       })
       .catch((erro) => {
-        console.error("Erro ao processar o arquivo:", erro);
-      });
-  };
+        console.error('Erro ao processar o arquivo:', erro)
+      })
+  }
 
-  if (loading || loadingContratos) return "Submitting...";
-  if (error) return `Submission error! ${error.message}`;
+  if (loading || loadingContratos) return 'Submitting...'
+  if (error) return `Submission error! ${error.message}`
 
-  const { contratos } = dataContratos;
+  const { contratos } = dataContratos
 
   return (
     <Space
       style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "initial",
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'initial',
       }}
     >
       <form onSubmit={handleSubmit(handleFormSubmit)}>
         <Space wrap>
           <div>
             <Input
-              {...register("projeto")}
+              {...register('projeto')}
               type="number"
               placeholder="Projeto"
             />
@@ -170,7 +161,7 @@ export default function CreateProject() {
 
           <div>
             <Input
-              {...register("diagrama")}
+              {...register('diagrama')}
               type="number"
               placeholder="Diagrama ou Ordem"
             />
@@ -178,10 +169,10 @@ export default function CreateProject() {
           </div>
 
           <div>
-            <Select {...register("contrato")}>
+            <Select {...register('contrato')}>
               {contratos.map((contrato, index) => (
                 <option key={index} value={contrato.numero}>
-                  {contrato.numero + " " + contrato.csd}
+                  {contrato.numero + ' ' + contrato.csd}
                 </option>
               ))}
             </Select>
@@ -189,19 +180,19 @@ export default function CreateProject() {
           </div>
 
           <div>
-            <Input {...register("cidade")} type="text" placeholder="Cidade" />
+            <Input {...register('cidade')} type="text" placeholder="Cidade" />
             {errors.cidade && <Span>{errors.cidade.message}</Span>}
           </div>
 
           <div>
-            <Input {...register("local")} type="text" placeholder="Local" />
+            <Input {...register('local')} type="text" placeholder="Local" />
             {errors.local && <Span>{errors.local.message}</Span>}
           </div>
 
           <div>
             <Input
-              {...register("tipo")}
-              status={errors.tipo ? "error" : "success"}
+              {...register('tipo')}
+              status={errors.tipo ? 'error' : 'success'}
               type="text"
               placeholder="Tipo"
             />
@@ -210,8 +201,8 @@ export default function CreateProject() {
 
           <div>
             <Input
-              {...register("coord.x")}
-              status={errors.x ? "error" : "success"}
+              {...register('coord.x')}
+              status={errors.x ? 'error' : 'success'}
               type="text"
               placeholder="Coordenada X"
             />
@@ -220,8 +211,8 @@ export default function CreateProject() {
 
           <div>
             <Input
-              {...register("coord.y")}
-              status={errors.y ? "error" : "success"}
+              {...register('coord.y')}
+              status={errors.y ? 'error' : 'success'}
               type="text"
               placeholder="Coordenada Y"
             />
@@ -231,83 +222,77 @@ export default function CreateProject() {
 
         <Divider />
 
-        <Space
+        <div
           style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "initial",
+            display: 'flex',
+            flexDirection: 'row',
+            margin: '20px 0',
+            gap: '10px',
           }}
         >
-          <Space
+          <Button icon={<FileExcelOutlined />}>
+            <label htmlFor="arquivo">Carregar ADS</label>
+          </Button>
+          <Input
+            id="arquivo"
+            name="arquivo"
+            type="file"
+            accept=".xlsx"
+            onChange={handleSelecionarArquivo}
             style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "initial",
+              display: 'none',
+              height: '50px',
+              backgroundColor: '#fCfc',
+              border: 'none',
             }}
+          />
+
+          <Button
+            type="primary"
+            onClick={handleArmazenarArquivo}
+            disabled={!arquivo}
           >
-            <Space>
-              <Radio.Group
-                onChange={(e) => setUnidade(e.target.value)}
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                }}
-              >
-                <Radio.Button value="SRV" key="srv">
-                  Serviços
-                </Radio.Button>
-                <Radio.Button value="PEÇ" key="pec">
-                  Material
-                </Radio.Button>
-              </Radio.Group>
+            Filtrar
+          </Button>
 
-              <Button disabled={!unidade} icon={<FileExcelOutlined />}>
-                <label htmlFor="arquivo">Carregar ADS</label>
-              </Button>
-              <Input
-                id="arquivo"
-                name="arquivo"
-                type="file"
-                accept=".xlsx"
-                onChange={handleSelecionarArquivo}
-                style={{
-                  display: "none",
-                  height: "50px",
-                  backgroundColor: "#fCfc",
-                  border: "none",
-                }}
-              />
+          <Button type="primary" htmlType="submit">
+            Salvar obra
+          </Button>
+        </div>
 
-              <Button
-                type="primary"
-                onClick={handleArmazenarArquivo}
-                disabled={!arquivo}
-              >
-                Filtrar
-              </Button>
-            </Space>
-
-            <Descriptions>
-              <Descriptions.Item label="Valor">R$ 00.000,00</Descriptions.Item>
-            </Descriptions>
-          </Space>
-
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: '10px',
+            justifyContent: 'space-around',
+          }}
+        >
           <Table
+            title={() => 'Serviços'}
             size="small"
             columns={columns}
-            dataSource={dadosFiltrados}
+            dataSource={dadosFiltrados.servicos}
             rowKey={(record) => record.codigo}
             pagination={false}
             scroll={{
               y: 600,
             }}
           />
-        </Space>
 
-        <Button type="primary" htmlType="submit">
-          Salvar obra
-        </Button>
+          <Table
+            title={() => 'Materiais'}
+            size="small"
+            columns={columns}
+            dataSource={dadosFiltrados.materiais}
+            rowKey={(record) => record.codigo}
+            pagination={false}
+            scroll={{
+              y: 600,
+            }}
+          />
+        </div>
       </form>
     </Space>
-  );
+  )
 }
