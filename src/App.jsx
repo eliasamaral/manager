@@ -22,40 +22,40 @@ import CadastrarUsuario from './pages/create-user'
 // import Pagamentos from "./pages/pagamentos";
 
 function App() {
-  return (
-    <AuthProvider>
-      <DndProvider backend={HTML5Backend}>
-        <PontoProvider>
-          <Router>
-            <GlobalStyle />
-            <Routes>
-              <Route path="/" element={<PrivateRoute />}>
-                <Route path="/" element={<Tamplate />}>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/projetos" element={<Projects />} />
-                  <Route
-                    path="/projetos/createProject"
-                    element={<CreateProject />}
-                  />
-                  <Route path="/projeto/:id" element={<Project />} />
-                  <Route path="/rdo" element={<RDO />} />
-                  <Route path="/codigos" element={<Codigos />} />
-                  <Route path="/contratos" element={<Contracts />} />
-                  <Route path="/kanban" element={<ProjectProgress />} />
-                  {/* <Route path="/pagamentos" element={<Pagamentos />} /> */}
-                  <Route
-                    path="/cadastrar-usuario"
-                    element={<CadastrarUsuario />}
-                  />
-                </Route>
-              </Route>
-              <Route path="/login" element={<Login />} />
-            </Routes>
-          </Router>
-        </PontoProvider>
-      </DndProvider>
-    </AuthProvider>
-  )
+	return (
+		<AuthProvider>
+			<DndProvider backend={HTML5Backend}>
+				<PontoProvider>
+					<Router>
+						<GlobalStyle />
+						<Routes>
+							<Route path="/" element={<PrivateRoute />}>
+								<Route path="/" element={<Tamplate />}>
+									<Route path="/" element={<Home />} />
+									<Route path="/projetos" element={<Projects />} />
+									<Route
+										path="/projetos/createProject"
+										element={<CreateProject />}
+									/>
+									<Route path="/projeto/:id" element={<Project />} />
+									<Route path="/rdo" element={<RDO />} />
+									<Route path="/codigos" element={<Codigos />} />
+									<Route path="/contratos" element={<Contracts />} />
+									<Route path="/kanban" element={<ProjectProgress />} />
+									{/* <Route path="/pagamentos" element={<Pagamentos />} /> */}
+									<Route
+										path="/cadastrar-usuario"
+										element={<CadastrarUsuario />}
+									/>
+								</Route>
+							</Route>
+							<Route path="/login" element={<Login />} />
+						</Routes>
+					</Router>
+				</PontoProvider>
+			</DndProvider>
+		</AuthProvider>
+	)
 }
 
 export default App

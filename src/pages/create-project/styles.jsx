@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const Input = styled.input`
   font-size: 14px;
@@ -10,12 +10,12 @@ export const Input = styled.input`
   height: 32px;
   padding: 4px 15px;
   border-radius: 6px;
-`;
+`
 
 export const Span = styled.span`
   display: flex;
   height: 20px;
-`;
+`
 
 export const Select = styled.select`
   font-size: 14px;
@@ -27,4 +27,4 @@ export const Select = styled.select`
   height: 32px;
   padding: 4px 15px;
   border-radius: 6px;
-`;
+`

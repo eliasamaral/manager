@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const Container = styled.div`
   form {
@@ -8,12 +8,12 @@ export const Container = styled.div`
     width: 100%;
     gap: 10px;
   }
-`;
+`
 
 export const Span = styled.span`
   display: flex;
   height: 20px;
-`;
+`
 export const Input = styled.input`
   font-size: 14px;
   border: 1px solid rgb(177 177 177);
@@ -24,4 +24,4 @@ export const Input = styled.input`
   height: 32px;
   padding: 4px 15px;
   border-radius: 6px;
-`;
+`

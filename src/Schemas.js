@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client'
 
 export const CREATE_PROJETO = gql`
   mutation ($projetoInput: ProjetoInput!) {
@@ -6,7 +6,7 @@ export const CREATE_PROJETO = gql`
       id
     }
   }
-`;
+`
 
 export const GET_CODIGOS = gql`
   query {
@@ -20,7 +20,7 @@ export const GET_CODIGOS = gql`
       ativo
     }
   }
-`;
+`
 
 export const GET_PROJETOS = gql`
   query {
@@ -35,7 +35,7 @@ export const GET_PROJETOS = gql`
       }
     }
   }
-`;
+`
 
 export const GET_RDO = gql`
   query ($_id: ID!) {
@@ -80,7 +80,7 @@ export const GET_RDO = gql`
       }
     }
   }
-`;
+`
 
 export const GET_PROJETO = gql`
   query ($projeto: Float!) {
@@ -127,7 +127,7 @@ export const GET_PROJETO = gql`
       }
     }
   }
-`;
+`
 
 export const UPDATE_PROJETO = gql`
   mutation updateProjeto(
@@ -136,7 +136,7 @@ export const UPDATE_PROJETO = gql`
   ) {
     updateProjeto(id: $updateProjetoId, data: $updateProjetoData)
   }
-`;
+`
 
 export const GET_RDOS = gql`
   query {
@@ -146,19 +146,19 @@ export const GET_RDOS = gql`
       dataDaProducao
     }
   }
-`;
+`
 
 export const DELETE_PROJETOS = gql`
   mutation ($id: ID!) {
     deleteProjeto(id: $id)
   }
-`;
+`
 
 export const DELETE_USER = gql`
   mutation ($_id: ID!) {
     deleteUser(_id: $_id)
   }
-`;
+`
 
 export const LOGIN_USER = gql`
   mutation login($loginInput: LoginInput) {
@@ -168,7 +168,7 @@ export const LOGIN_USER = gql`
       token
     }
   }
-`;
+`
 
 export const GET_CONTRATOS = gql`
   query {
@@ -179,7 +179,7 @@ export const GET_CONTRATOS = gql`
       csd
     }
   }
-`;
+`
 
 export const CREATE_CONTRACT = gql`
   mutation ($numero: Float!, $fator: Float!, $csd: String!) {
@@ -187,7 +187,7 @@ export const CREATE_CONTRACT = gql`
       id
     }
   }
-`;
+`
 
 export const UPDATE_STATUS = gql`
   mutation ($id: ID!, $status: Float) {
@@ -195,7 +195,7 @@ export const UPDATE_STATUS = gql`
       status
     }
   }
-`;
+`
 
 export const GET_USERS = gql`
   query {
@@ -205,7 +205,7 @@ export const GET_USERS = gql`
       email
     }
   }
-`;
+`
 
 export const CREATE_USERS = gql`
   mutation ($name: String, $email: String, $senha: String) {
@@ -213,7 +213,7 @@ export const CREATE_USERS = gql`
       _id
     }
   }
-`;
+`
 export const LOGIN_USER_EMAIL = gql`
   mutation login($loginInput: LoginInput) {
     loginFromEmail(loginInput: $loginInput) {
@@ -221,4 +221,4 @@ export const LOGIN_USER_EMAIL = gql`
       token
     }
   }
-`;
+`
