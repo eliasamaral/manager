@@ -14,86 +14,6 @@ const contentStyle = {
 	background: '#364d79',
 }
 
-const a = {
-	dataAtual: '09/09/2024',
-	projeto: 'UFV São Pedro',
-	local: 'São Pedro da Aldeia',
-	encarregado: 'Elias Amaral',
-	observacoes: 'Quebra de caminhão.',
-	clima: {
-		manha: 'Bom',
-		tarde: 'Bom',
-	},
-	dataDaProducao: '09/09/2024',
-	atividades: [
-		{
-			atividade: 'Montagem de andaimes',
-			duracao: '06:15',
-		},
-		{
-			atividade: 'Instalação de cabos elétricos',
-			duracao: '03:45',
-		},
-		{
-			atividade: 'Pintura externa de paredes',
-			duracao: '05:20',
-		},
-		{
-			atividade: 'Soldagem de estruturas metálicas',
-			duracao: '07:00',
-		},
-		{
-			atividade: 'Concretagem de laje',
-			duracao: '04:45',
-		},
-		{
-			atividade: 'Reparação de tubulações',
-			duracao: '03:30',
-		},
-		{
-			atividade: 'Demolição de parede',
-			duracao: '02:50',
-		},
-		{
-			atividade: 'Terraplanagem',
-			duracao: '06:00',
-		},
-		{
-			atividade: 'Instalação de portas e janelas',
-			duracao: '04:10',
-		},
-		{
-			atividade: 'Revisão elétrica geral',
-			duracao: '03:25',
-		},
-	],
-	maoDeObra: [
-		{
-			nome: 'João',
-			funcao: 'Pedreiro',
-			inicio: '07:00',
-			fim: '16:30',
-		},
-		{
-			nome: 'Mariana',
-			funcao: 'Engenheira',
-			inicio: '08:15',
-			fim: '17:45',
-		},
-		{
-			nome: 'Carlos',
-			funcao: 'Encarregado',
-			inicio: '05:45',
-			fim: '15:15',
-		},
-		{
-			nome: 'Ana',
-			funcao: 'Mestre de obras',
-			inicio: '06:30',
-			fim: '16:00',
-		},
-	],
-}
 
 const columnsAtividades = [
 	{
@@ -158,6 +78,7 @@ export default function RDODigital({ RDOfiltrado }) {
 	}
 
 	const { getRDO } = data
+	
 
 	return (
 		<div
@@ -194,7 +115,7 @@ export default function RDODigital({ RDOfiltrado }) {
 			<Divider orientation={'left'}>Mão de obra</Divider>
 
 			<Table
-				dataSource={a.atividades}
+				dataSource={getRDO.atividades}
 				rowKey={(record) => record._id}
 				columns={columnsAtividades}
 				size="small"
@@ -204,7 +125,7 @@ export default function RDODigital({ RDOfiltrado }) {
 			<Divider orientation={'left'}>Serviços executados</Divider>
 
 			<Table
-				dataSource={a.maoDeObra}
+				dataSource={getRDO.maoDeObra}
 				rowKey={(record) => record._id}
 				columns={columnsMaoDeObra}
 				size="small"
