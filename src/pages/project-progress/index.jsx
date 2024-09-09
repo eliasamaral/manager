@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react'
 
-import Board from "../../components/Kanban/Board";
+import Board from '../../components/Kanban/Board'
 
 const ProjectProgress = () => {
-  return <Board />;
-};
+	return <Board />
+}
 
-export default ProjectProgress;
+export default ProjectProgress
