@@ -1,14 +1,18 @@
 import React from 'react'
-import {
-	Descriptions,
-	Divider,
-	Space,
-	Spin,
-	Table,
-} from 'antd'
+import { Descriptions, Divider, Space, Spin, Table } from 'antd'
 import { useQuery } from '@apollo/client'
 import { GET_RDO } from '../../Schemas'
 import Alert from 'antd/es/alert/Alert'
+import image from '../../assets/1.jpg'
+
+const contentStyle = {
+	width: '330px',
+	height: '200px',
+	color: '#fff',
+	lineHeight: '160px',
+	textAlign: 'center',
+	background: '#364d79',
+}
 
 const a = {
 	dataAtual: '09/09/2024',
@@ -205,12 +209,39 @@ export default function RDODigital({ RDOfiltrado }) {
 				columns={columnsMaoDeObra}
 				size="small"
 				scroll={{ y: '30vh' }}
-				footer={() => 'Valor do relatório: R$ 0.000,00'}
 			/>
 
 			<Divider orientation={'left'}>Observações</Divider>
 
-			<Alert description={getRDO.observacoes} type="info" />
+			<Alert
+				description={getRDO.observacoes}
+				type="info"
+				style={{ marginBottom: '20px' }}
+			/>
+
+			<div
+				style={{
+					display: 'grid',
+					gridTemplateColumns: ' repeat(auto-fill, 330px)',
+					gap: '10px',
+					width: '100%',
+				}}
+			>
+				<div style={contentStyle}>
+					<img
+						src={image}
+						alt=""
+						style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+					/>
+				</div>
+				<div style={contentStyle}>
+					<img
+						src={image}
+						alt=""
+						style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+					/>
+				</div>
+			</div>
 		</div>
 	)
 }
