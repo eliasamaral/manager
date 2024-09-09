@@ -5,33 +5,129 @@ import {
 	Space,
 	Spin,
 	Table,
-	Tag,
-	Typography,
 } from 'antd'
 import { useQuery } from '@apollo/client'
 import { GET_RDO } from '../../Schemas'
+import Alert from 'antd/es/alert/Alert'
 
-const columns = [
+const a = {
+	dataAtual: '09/09/2024',
+	projeto: 'UFV São Pedro',
+	local: 'São Pedro da Aldeia',
+	encarregado: 'Elias Amaral',
+	observacoes: 'Quebra de caminhão.',
+	clima: {
+		manha: 'Bom',
+		tarde: 'Bom',
+	},
+	dataDaProducao: '09/09/2024',
+	atividades: [
+		{
+			atividade: 'Montagem de andaimes',
+			duracao: '06:15',
+		},
+		{
+			atividade: 'Instalação de cabos elétricos',
+			duracao: '03:45',
+		},
+		{
+			atividade: 'Pintura externa de paredes',
+			duracao: '05:20',
+		},
+		{
+			atividade: 'Soldagem de estruturas metálicas',
+			duracao: '07:00',
+		},
+		{
+			atividade: 'Concretagem de laje',
+			duracao: '04:45',
+		},
+		{
+			atividade: 'Reparação de tubulações',
+			duracao: '03:30',
+		},
+		{
+			atividade: 'Demolição de parede',
+			duracao: '02:50',
+		},
+		{
+			atividade: 'Terraplanagem',
+			duracao: '06:00',
+		},
+		{
+			atividade: 'Instalação de portas e janelas',
+			duracao: '04:10',
+		},
+		{
+			atividade: 'Revisão elétrica geral',
+			duracao: '03:25',
+		},
+	],
+	maoDeObra: [
+		{
+			nome: 'João',
+			funcao: 'Pedreiro',
+			inicio: '07:00',
+			fim: '16:30',
+		},
+		{
+			nome: 'Mariana',
+			funcao: 'Engenheira',
+			inicio: '08:15',
+			fim: '17:45',
+		},
+		{
+			nome: 'Carlos',
+			funcao: 'Encarregado',
+			inicio: '05:45',
+			fim: '15:15',
+		},
+		{
+			nome: 'Ana',
+			funcao: 'Mestre de obras',
+			inicio: '06:30',
+			fim: '16:00',
+		},
+	],
+}
+
+const columnsAtividades = [
 	{
-		title: 'Código',
-		dataIndex: 'codigo',
-		key: 'codigo',
+		title: 'Atividade',
+		dataIndex: 'atividade',
+		key: 'atividade',
+	},
+	{
+		title: 'Duração',
+		dataIndex: 'duracao',
+		key: 'duracao',
+	},
+]
+const columnsMaoDeObra = [
+	{
+		title: 'Nome',
+		dataIndex: 'nome',
+		key: 'nome',
 		width: '100px',
 	},
 	{
-		title: 'Descrição',
-		dataIndex: 'descricao',
-		key: 'descricao',
+		title: 'Função',
+		dataIndex: 'funcao',
+		key: 'funcao',
 	},
 	{
-		title: 'Quantidade',
-		dataIndex: 'quantidade',
-		key: 'quantidade',
+		title: 'Início',
+		dataIndex: 'inicio',
+		key: 'inicio',
+		width: '100px',
+	},
+	{
+		title: 'Fim',
+		dataIndex: 'fim',
+		key: 'fim',
 		width: '100px',
 	},
 ]
-
-const colorStatus = ['#108ee9', '#ec1c24']
 
 export default function RDODigital({ RDOfiltrado }) {
 	const { _id } = RDOfiltrado
@@ -60,29 +156,20 @@ export default function RDODigital({ RDOfiltrado }) {
 	const { getRDO } = data
 
 	return (
-		<Space
-			direction="vertical"
+		<div
 			style={{
 				display: 'flex',
+				flexDirection: 'column',
 				width: '750px',
-				height: '800px',
 				padding: '30px',
-
+				overflowY: 'scroll',
+				height: '85vh',
 				backgroundColor: '#f5f5f5cc',
 			}}
 		>
-			<Tag
-				color={getRDO.isFinal ? colorStatus[1] : colorStatus[0]}
-				style={{ marginBottom: '5px' }}
-			>
-				{getRDO.isFinal ? 'Final' : 'Parcial'}
-			</Tag>
 			<Descriptions title="RDO Digital">
 				<Descriptions.Item label="Projeto">{getRDO.projeto}</Descriptions.Item>
-				<Descriptions.Item label="Diagrama">
-					{getRDO.diagrama}
-				</Descriptions.Item>
-				<Descriptions.Item label="Encarregado">
+				<Descriptions.Item label="Líder">
 					{getRDO.encarregado}
 				</Descriptions.Item>
 				<Descriptions.Item label="Local">{getRDO.local}</Descriptions.Item>
@@ -90,20 +177,7 @@ export default function RDODigital({ RDOfiltrado }) {
 					{getRDO.dataDaProducao}
 				</Descriptions.Item>
 			</Descriptions>
-			<Descriptions>
-				<Descriptions.Item label="Encarregado">
-					{getRDO.maoDeObra.encarregado}
-				</Descriptions.Item>
-				<Descriptions.Item label="Motorista">
-					{getRDO.maoDeObra.motorista}
-				</Descriptions.Item>
-				<Descriptions.Item label="Eletricista">
-					{getRDO.maoDeObra.eletricista}
-				</Descriptions.Item>
-				<Descriptions.Item label="Auxiliar">
-					{getRDO.maoDeObra.auxiliar}
-				</Descriptions.Item>
-			</Descriptions>
+
 			<Descriptions>
 				<Descriptions.Item label="Manhã">
 					{getRDO.clima.manha}
@@ -112,51 +186,31 @@ export default function RDODigital({ RDOfiltrado }) {
 					{getRDO.clima.tarde}
 				</Descriptions.Item>
 			</Descriptions>
-			<Descriptions>
-				<Descriptions.Item>{getRDO.observacoes}</Descriptions.Item>
-			</Descriptions>
 
-			<Divider
-				orientation={'left'}
-				children={<Typography.Text>Ficha equipamento</Typography.Text>}
-			></Divider>
-
-			<Descriptions column={4} size="small">
-				<Descriptions.Item label="ESTF">
-					{getRDO.fichaTrafo.estf}
-				</Descriptions.Item>
-				<Descriptions.Item label="N° Serie">
-					{getRDO.fichaTrafo.nSerie}
-				</Descriptions.Item>
-				<Descriptions.Item label="ESTF Sucata">
-					{getRDO.fichaTrafo.estfSucata}
-				</Descriptions.Item>
-				<Descriptions.Item label="N° Sucata">
-					{getRDO.fichaTrafo.nSucataSerie}
-				</Descriptions.Item>
-			</Descriptions>
-
-			<Descriptions size="small">
-				<Descriptions.Item label="NA">{getRDO.fichaTrafo.NA}</Descriptions.Item>
-				<Descriptions.Item label="NB">{getRDO.fichaTrafo.NB}</Descriptions.Item>
-				<Descriptions.Item label="NC">{getRDO.fichaTrafo.NC}</Descriptions.Item>
-				<Descriptions.Item label="AB">{getRDO.fichaTrafo.AB}</Descriptions.Item>
-				<Descriptions.Item label="AC">{getRDO.fichaTrafo.AC}</Descriptions.Item>
-				<Descriptions.Item label="BC">{getRDO.fichaTrafo.BC}</Descriptions.Item>
-			</Descriptions>
-			<Divider
-				orientation={'left'}
-				children={<Typography.Text>Serviços executados</Typography.Text>}
-			></Divider>
+			<Divider orientation={'left'}>Mão de obra</Divider>
 
 			<Table
-				dataSource={getRDO.servicos}
+				dataSource={a.atividades}
 				rowKey={(record) => record._id}
-				columns={columns}
+				columns={columnsAtividades}
+				size="small"
+				scroll={{ y: '30vh' }}
+			/>
+
+			<Divider orientation={'left'}>Serviços executados</Divider>
+
+			<Table
+				dataSource={a.maoDeObra}
+				rowKey={(record) => record._id}
+				columns={columnsMaoDeObra}
 				size="small"
 				scroll={{ y: '30vh' }}
 				footer={() => 'Valor do relatório: R$ 0.000,00'}
 			/>
-		</Space>
+
+			<Divider orientation={'left'}>Observações</Divider>
+
+			<Alert description={getRDO.observacoes} type="info" />
+		</div>
 	)
 }

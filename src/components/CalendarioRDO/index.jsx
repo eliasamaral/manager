@@ -42,12 +42,7 @@ function CalendarioRDO() {
 	const { getRDOS } = data
 
 	return (
-		<Space
-			style={{
-				display: 'flex',
-				alignItems: 'stretch',
-			}}
-		>
+		<div style={{display: "flex", flexDirection: "row"}}>
 			<Calendar
 				style={{
 					marginInline: '10px',
@@ -81,8 +76,12 @@ function CalendarioRDO() {
 				}}
 			/>
 
-			{RDOfiltrado && <RDODigital RDOfiltrado={RDOfiltrado} />}
-		</Space>
+			{RDOfiltrado && (
+				<Space>
+					<RDODigital RDOfiltrado={RDOfiltrado} />
+				</Space>
+			)}
+		</div>
 	)
 }
 
