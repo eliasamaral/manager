@@ -8,8 +8,6 @@ import { setContext } from '@apollo/client/link/context'
 
 const API_URL = import.meta.env.VITE_API_URL
 
-console.log(API_URL)
-
 const httpLink = createHttpLink({
 	uri: API_URL,
 })

@@ -43,40 +43,22 @@ export const GET_RDO = gql`
       _id
       projeto
       local
-      diagrama
-      createdAt
       encarregado
       dataDaProducao
-      isFinal
       observacoes
-      fichaTrafo {
-        estf
-        estfsucata
-        nSerie
-        nSucataSerie
-        NA
-        NB
-        NC
-        AB
-        AC
-        BC
-      }
-
       clima {
         manha
         tarde
       }
       maoDeObra {
-        auxiliar
-        eletricista
-        encarregado
-        motorista
+        nome
+        funcao
+        inicio
+        fim
       }
-      servicos {
-        _id
-        codigo
-        descricao
-        quantidade
+      atividades {
+        atividade
+        duracao
       }
     }
   }

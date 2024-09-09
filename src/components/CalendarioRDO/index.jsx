@@ -42,7 +42,7 @@ function CalendarioRDO() {
 	const { getRDOS } = data
 
 	return (
-		<div style={{display: "flex", flexDirection: "row"}}>
+		<div style={{ display: 'flex', flexDirection: 'row' }}>
 			<Calendar
 				style={{
 					marginInline: '10px',
