@@ -59,6 +59,7 @@ export const GET_RDO = gql`
       atividades {
         atividade
         duracao
+        executante
       }
     }
   }
