@@ -1,9 +1,11 @@
 import React from 'react'
-import { Descriptions, Divider, Space, Spin, Table } from 'antd'
+import { Button, Descriptions, Divider, Space, Spin, Table } from 'antd'
 import { useQuery } from '@apollo/client'
 import { GET_RDO } from '../../Schemas'
 import Alert from 'antd/es/alert/Alert'
 import image from '../../assets/1.jpg'
+
+import { exportPDF } from '../../utility/exportPDF'
 
 const contentStyle = {
 	width: '330px',
@@ -13,8 +15,6 @@ const contentStyle = {
 	textAlign: 'center',
 	background: '#364d79',
 }
-
-
 const columnsAtividades = [
 	{
 		title: 'Atividade',
@@ -78,7 +78,6 @@ export default function RDODigital({ RDOfiltrado }) {
 	}
 
 	const { getRDO } = data
-	
 
 	return (
 		<div
@@ -92,7 +91,14 @@ export default function RDODigital({ RDOfiltrado }) {
 				backgroundColor: '#f5f5f5cc',
 			}}
 		>
-			<Descriptions title="RDO Digital">
+			<Descriptions
+				title="RDO Digital"
+				extra={
+					<Button type="primary" onClick={() => exportPDF(getRDO)}>
+						PDF
+					</Button>
+				}
+			>
 				<Descriptions.Item label="Projeto">{getRDO.projeto}</Descriptions.Item>
 				<Descriptions.Item label="Líder">
 					{getRDO.encarregado}
@@ -149,18 +155,10 @@ export default function RDODigital({ RDOfiltrado }) {
 				}}
 			>
 				<div style={contentStyle}>
-					<img
-						src={image}
-						alt=""
-						style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-					/>
+					<div>Foto 1</div>
 				</div>
 				<div style={contentStyle}>
-					<img
-						src={image}
-						alt=""
-						style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-					/>
+					<div>Foto 2</div>
 				</div>
 			</div>
 		</div>
