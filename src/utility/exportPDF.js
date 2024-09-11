@@ -6,9 +6,9 @@ import logo from '../assets/MTELogo.png'
 export function exportPDF(params) {
 	const doc = new jsPDF()
 
-	doc.addImage(logo, 'png', 176, 10, 20, 20)
+	doc.addImage(logo, 'png', 170, 10, 20, 20)
 	doc.setFontSize(10)
-	doc.text('MTE Solutions', 174, 37)
+	doc.text('Energia que movimenta!', 160, 37)
 
 	autoTable(doc, {
 		head: [[`ID: ${params._id}`]],
@@ -57,10 +57,11 @@ export function exportPDF(params) {
 	})
 
 	autoTable(doc, {
-		head: [['Atividade', 'Duração']],
+		head: [['Atividade', 'Duração', 'Executante']],
 		columns: [
 			{ header: 'Atividade', dataKey: 'atividade' },
 			{ header: 'Duração', dataKey: 'duracao' },
+			{ header: 'Executante', dataKey: 'executante' },
 		],
 		body: params.atividades,
 	})

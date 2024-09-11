@@ -26,6 +26,11 @@ const columnsAtividades = [
 		dataIndex: 'duracao',
 		key: 'duracao',
 	},
+	{
+		title: 'Executante',
+		dataIndex: 'executante',
+		key: 'executante',
+	},
 ]
 const columnsMaoDeObra = [
 	{
