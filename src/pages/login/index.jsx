@@ -10,7 +10,7 @@ import { UserOutlined } from '@ant-design/icons'
 const { Title } = Typography
 
 export default function Login() {
-	let navigate = useNavigate()
+	const navigate = useNavigate()
 	const context = useContext(AuthContext)
 	const [errors, setErrors] = useState([])
 
@@ -26,6 +26,11 @@ export default function Login() {
 	const { onChange, onSubmit, values } = useForm(loginUserCallback, {
 		email: '',
 	})
+
+	const handleChange = (e) => {
+		const { name, value } = e.target;
+		onChange({ target: { name, value: value.trim() } });
+	  };
 
 	const [loginFromEmail] = useMutation(LOGIN_USER_EMAIL, {
 		update(_, { data: { loginFromEmail: userData } }) {
@@ -110,7 +115,7 @@ export default function Login() {
           </Form.Item> */}
 					<Form.Item
 						name="email"
-						extra={errors.map(function (error, index) {
+						extra={errors.map((error, index) => {
 							return <span>{error.message}</span>
 						})}
 						rules={[
@@ -123,7 +128,7 @@ export default function Login() {
 						<Input
 							size="large"
 							variant="outlined"
-							onChange={onChange}
+							onChange={handleChange}
 							name="email"
 							prefix={<UserOutlined />}
 							placeholder="Email"
