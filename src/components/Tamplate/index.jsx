@@ -80,16 +80,16 @@ function Tamplate() {
 						//   icon:<EuroOutlined />,
 						// },
 
-						{
-							label: 'Administrador',
-							icon: <GlobalOutlined />,
-							children: [
-								{
-									label: 'Cadastrar usuarios',
-									key: '/cadastrar-usuario',
-								},
-							],
-						},
+						// {
+						// 	label: 'Administrador',
+						// 	icon: <GlobalOutlined />,
+						// 	children: [
+						// 		{
+						// 			label: 'Cadastrar usuarios',
+						// 			key: '/cadastrar-usuario',
+						// 		},
+						// 	],
+						// },
 						{
 							label: 'Ferramentas',
 							icon: <ToolOutlined />,
@@ -101,7 +101,7 @@ function Tamplate() {
 							],
 						},
 					]}
-				></Menu>
+				/>
 			</Sider>
 
 			<Layout
