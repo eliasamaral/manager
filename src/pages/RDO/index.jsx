@@ -1,9 +1,21 @@
-import React from 'react'
-import { Space } from 'antd'
+import React, { useState } from 'react'
+import { Modal, Space } from 'antd'
+import { QuestionCircleOutlined } from '@ant-design/icons'
+import { FloatButton } from 'antd'
 
 import CalendarioRDO from '../../components/CalendarioRDO'
 
 function RDO() {
+	const [isModalOpen, setIsModalOpen] = useState(false)
+	const showModal = () => {
+		setIsModalOpen(true)
+	}
+	const handleOk = () => {
+		setIsModalOpen(false)
+	}
+	const handleCancel = () => {
+		setIsModalOpen(false)
+	}
 	return (
 		<Space
 			style={{
@@ -13,6 +25,23 @@ function RDO() {
 			}}
 		>
 			<CalendarioRDO />
+			<FloatButton
+				icon={<QuestionCircleOutlined />}
+				type="primary"
+				style={{
+					insetInlineEnd: 24,
+				}}
+				onClick={showModal}
+			/>
+			<Modal
+				open={isModalOpen}
+				onOk={handleOk}
+				onCancel={handleCancel}
+			>
+				<a alt="linkRDO" href="https://rdo-digital.vercel.app/generica">
+					Link RDO Digital
+				</a>
+			</Modal>
 		</Space>
 	)
 }
