@@ -46,6 +46,7 @@ function AuthProvider(props) {
 		dispatch({
 			type: 'LOGIN',
 			payload: userData,
+			
 		})
 	}
 
