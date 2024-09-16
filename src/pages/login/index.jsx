@@ -16,12 +16,7 @@ export default function Login() {
 
 	function loginUserCallback() {
 		loginFromEmail()
-	} 
-
-	// const { onChange, onSubmit, values } = useForm(loginUserCallback, {
-	//   matricula: null,
-	//   senha: "",
-	// });
+	}
 
 	const { onChange, onSubmit, values } = useForm(loginUserCallback, {
 		email: '',
@@ -65,57 +60,10 @@ export default function Login() {
 					Acessar o <strong>Manager.</strong>
 				</Title>
 				<Form onFinish={onSubmit}>
-					{/* <Form.Item
-            label="Matricula"
-            name="matricula"
-            rules={[
-              {
-                required: true,
-                message: "Obrigatorio.",
-              },
-            ]}
-            style={{
-              display: "flex",
-              justifyContent: "space-around",
-            }}
-          >
-            <Input
-              bordered={false}
-              onChange={onChange}
-              type="number"
-              name="matricula"
-              placeholder="15715"
-              style={{
-                borderBottom: "1px solid #ccc",
-                borderRadius: "0",
-              }}
-            />
-          </Form.Item>
-          <Form.Item
-            label="Senha"
-            name="senha"
-            rules={[
-              {
-                required: true,
-                message: "Obrigatorio.",
-              },
-            ]}
-          >
-            <Input
-              bordered={false}
-              onChange={onChange}
-              type="password"
-              name="senha"
-              placeholder="**********"
-              style={{
-                borderBottom: "1px solid #ccc",
-                borderRadius: "0",
-              }}
-            />
-          </Form.Item> */}
 					<Form.Item
 						name="email"
-						extra={errors.map((error, index) => {
+						extra={errors.map((error) => {
+							// biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
 							return <span>{error.message}</span>
 						})}
 						rules={[

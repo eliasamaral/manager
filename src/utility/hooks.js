@@ -1,5 +1,4 @@
-import { useState, useContext } from 'react'
-import { PontoContext } from './context/pontoContext'
+import { useState } from 'react'
 
 export const useForm = (callback, inicialState = {}) => {
 	const [values, setValues] = useState(inicialState)
@@ -19,11 +18,3 @@ export const useForm = (callback, inicialState = {}) => {
 	}
 }
 
-export function usePontoContext() {
-	const context = useContext(PontoContext)
-
-	if (context === undefined) {
-		throw new Error('Erro no contexto')
-	}
-	return context
-}
