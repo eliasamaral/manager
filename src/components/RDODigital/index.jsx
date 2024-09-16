@@ -3,7 +3,6 @@ import { Button, Descriptions, Divider, Space, Spin, Table } from 'antd'
 import { useQuery } from '@apollo/client'
 import { GET_RDO } from '../../Schemas'
 import Alert from 'antd/es/alert/Alert'
-import image from '../../assets/1.jpg'
 
 import { exportPDF } from '../../utility/exportPDF'
 

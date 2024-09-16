@@ -5,15 +5,7 @@ import { Layout, theme, Menu, Typography, Divider } from 'antd'
 import { HeaderBar as Header } from '../Header'
 import { useNavigate } from 'react-router-dom'
 
-import {
-	ReconciliationOutlined,
-	HomeOutlined,
-	AreaChartOutlined,
-	ToolOutlined,
-	AuditOutlined,
-	GlobalOutlined,
-	EuroOutlined,
-} from '@ant-design/icons'
+import { AreaChartOutlined } from '@ant-design/icons'
 
 const { Content, Sider } = Layout
 const { Title } = Typography
@@ -51,54 +43,10 @@ function Tamplate() {
 					mode="inline"
 					onClick={handleMenuClick}
 					items={[
-						{ label: 'Home', key: '/', icon: <HomeOutlined /> },
-						{
-							label: 'Projetos',
-							key: '/projetos',
-							icon: <ReconciliationOutlined />,
-						},
-						{
-							label: 'Kanban',
-							key: '/kanban',
-							icon: <ReconciliationOutlined />,
-						},
-
 						{
 							label: 'Relatorios de Obra',
-							key: '/rdo',
+							key: '/',
 							icon: <AreaChartOutlined />,
-						},
-
-						{
-							label: 'Contratos',
-							key: '/contratos',
-							icon: <AuditOutlined />,
-						},
-						// {
-						//   label: "Pagamentos",
-						//   key: "/pagamentos",
-						//   icon:<EuroOutlined />,
-						// },
-
-						// {
-						// 	label: 'Administrador',
-						// 	icon: <GlobalOutlined />,
-						// 	children: [
-						// 		{
-						// 			label: 'Cadastrar usuarios',
-						// 			key: '/cadastrar-usuario',
-						// 		},
-						// 	],
-						// },
-						{
-							label: 'Ferramentas',
-							icon: <ToolOutlined />,
-							children: [
-								{
-									label: 'Códigos',
-									key: '/codigos',
-								},
-							],
 						},
 					]}
 				/>
