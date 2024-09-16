@@ -19,7 +19,7 @@ import Contracts from './pages/contracts'
 import PontoProvider from './utility/context/pontoContext'
 import ProjectProgress from './pages/project-progress'
 import CadastrarUsuario from './pages/create-user'
-// import Pagamentos from "./pages/pagamentos";
+import FormsRDO from './pages/rdo-forms'
 
 function App() {
 	return (
@@ -29,8 +29,8 @@ function App() {
 					<Router>
 						<GlobalStyle />
 						<Routes>
-							<Route path="/" element={<PrivateRoute />}>
-								<Route path="/" element={<Tamplate />}>
+							<Route element={<PrivateRoute />}>
+								<Route element={<Tamplate />}>
 									<Route path="/" element={<Home />} />
 									<Route path="/projetos" element={<Projects />} />
 									<Route
@@ -42,7 +42,6 @@ function App() {
 									<Route path="/codigos" element={<Codigos />} />
 									<Route path="/contratos" element={<Contracts />} />
 									<Route path="/kanban" element={<ProjectProgress />} />
-									{/* <Route path="/pagamentos" element={<Pagamentos />} /> */}
 									<Route
 										path="/cadastrar-usuario"
 										element={<CadastrarUsuario />}
@@ -50,6 +49,7 @@ function App() {
 								</Route>
 							</Route>
 							<Route path="/login" element={<Login />} />
+							<Route path="/rdoforms" element={<FormsRDO />} />
 						</Routes>
 					</Router>
 				</PontoProvider>

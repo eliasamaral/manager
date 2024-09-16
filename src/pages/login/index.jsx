@@ -16,7 +16,7 @@ export default function Login() {
 
 	function loginUserCallback() {
 		loginFromEmail()
-	}
+	} 
 
 	// const { onChange, onSubmit, values } = useForm(loginUserCallback, {
 	//   matricula: null,
@@ -28,9 +28,9 @@ export default function Login() {
 	})
 
 	const handleChange = (e) => {
-		const { name, value } = e.target;
-		onChange({ target: { name, value: value.trim() } });
-	  };
+		const { name, value } = e.target
+		onChange({ target: { name, value: value.trim() } })
+	}
 
 	const [loginFromEmail] = useMutation(LOGIN_USER_EMAIL, {
 		update(_, { data: { loginFromEmail: userData } }) {

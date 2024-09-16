@@ -11,8 +11,7 @@ import {
 	AreaChartOutlined,
 	ToolOutlined,
 	AuditOutlined,
-	GlobalOutlined,
-	EuroOutlined,
+
 } from '@ant-design/icons'
 
 const { Content, Sider } = Layout
@@ -51,7 +50,11 @@ function Tamplate() {
 					mode="inline"
 					onClick={handleMenuClick}
 					items={[
-						{ label: 'Home', key: '/', icon: <HomeOutlined /> },
+						{
+							label: 'Home', 
+							key: '/', 
+							icon: <HomeOutlined /> 
+						},
 						{
 							label: 'Projetos',
 							key: '/projetos',
