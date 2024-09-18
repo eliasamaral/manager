@@ -33,6 +33,7 @@ export function HeaderBar() {
 		'/pagamentos': 'Pagamentos',
 		'/kanban': 'Kanban',
 		'/cadastrar-usuario': 'Cadastrar Usuario',
+		'/setting': 'Configuração',
 	}
 
 	const currentRoute = location.pathname
