@@ -5,7 +5,7 @@ import { Layout, theme, Menu, Typography, Divider } from 'antd'
 import { HeaderBar as Header } from '../Header'
 import { useNavigate } from 'react-router-dom'
 
-import { AreaChartOutlined } from '@ant-design/icons'
+import { AreaChartOutlined, SettingOutlined } from '@ant-design/icons'
 
 const { Content, Sider } = Layout
 const { Title } = Typography
@@ -47,6 +47,11 @@ function Tamplate() {
 							label: 'Relatorios de Obra',
 							key: '/',
 							icon: <AreaChartOutlined />,
+						},
+						{
+							label: 'Configuração',
+							key: '/setting',
+							icon: <SettingOutlined />,
 						},
 					]}
 				/>

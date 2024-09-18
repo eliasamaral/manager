@@ -7,6 +7,7 @@ import { GlobalStyle } from './GlobalStyle'
 
 import Login from './pages/login'
 import RDO from './pages/RDO'
+import Setting from './pages/setting'
 import Tamplate from './components/Tamplate'
 import FormsRDO from './pages/rdo-forms'
 
@@ -19,6 +20,7 @@ function App() {
 							<Route element={<PrivateRoute />}>
 								<Route element={<Tamplate />}>
 									<Route path="/" element={<RDO />} />
+									<Route path="/setting" element={<Setting />} />
 
 								</Route>
 							</Route>
