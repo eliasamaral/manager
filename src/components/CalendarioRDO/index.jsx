@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import locale from 'antd/es/date-picker/locale/pt_BR'
 import 'dayjs/locale/pt-br'
 import { useQuery } from '@apollo/client'
-import { GET_RDOS } from '../../Schemas'
+import { GET_RDOS } from '../../schemas'
 import RDODigital from '../RDODigital'
 
 function CalendarioRDO() {

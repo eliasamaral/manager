@@ -3,7 +3,7 @@ import { AuthContext } from '../../utility/context/authContext'
 import { useForm } from '../../utility/hooks'
 import { Button, Typography, Form, Input } from 'antd'
 import { useMutation } from '@apollo/react-hooks'
-import { LOGIN_USER_EMAIL } from '../../Schemas'
+import { LOGIN_USER_EMAIL } from '../../schemas'
 import { useNavigate } from 'react-router-dom'
 import { UserOutlined } from '@ant-design/icons'
 

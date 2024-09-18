@@ -46,3 +46,34 @@ export const LOGIN_USER_EMAIL = gql`
     }
   }
 `
+export const GET_ACTIVITY = gql`
+  query{
+  activities {
+    id
+    nome
+    valor
+    descricao
+  }
+}
+
+`
+export const CREATED_ACTIVITY = gql`
+mutation (
+  $nome: String
+  $descricao: String
+  $valor: Float
+  
+  ) {
+  createActivity (
+   data: { nome: $nome
+    descricao: $descricao
+    valor: $valor}
+
+    ) {
+    id
+  }
+}
+
+
+
+`
