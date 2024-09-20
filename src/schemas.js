@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client'
+import { gql } from "@apollo/client";
 
 export const GET_RDO = gql`
   query ($_id: ID!) {
@@ -26,7 +26,7 @@ export const GET_RDO = gql`
       }
     }
   }
-`
+`;
 
 export const GET_RDOS = gql`
   query {
@@ -36,7 +36,7 @@ export const GET_RDOS = gql`
       dataDaProducao
     }
   }
-`
+`;
 
 export const LOGIN_USER_EMAIL = gql`
   mutation login($loginInput: LoginInput) {
@@ -45,35 +45,40 @@ export const LOGIN_USER_EMAIL = gql`
       token
     }
   }
-`
+`;
 export const GET_ACTIVITY = gql`
   query{
-  activities {
-    id
-    nome
-    valor
-    descricao
-  }
+    activities {
+        _id
+        name
+        description
+        price
+    }
 }
 
-`
+`;
 export const CREATED_ACTIVITY = gql`
-mutation (
-  $nome: String
-  $descricao: String
-  $valor: Float
-  
+  mutation (
+    $name: String
+    $description: String
+    $price: Float
   ) {
-  createActivity (
-   data: { nome: $nome
-    descricao: $descricao
-    valor: $valor}
-
+    createActivity (
+      data: { 
+        name: $name
+        description: $description
+        price: $price
+      }
     ) {
-    id
+      _id
+    }
   }
+`;
+
+export const DELETE_ACTIVITY = gql`
+  
+  mutation($_id: ID!){
+    deleteActivity(_id: $_id)
 }
 
-
-
-`
+`;

@@ -1,89 +1,105 @@
-import { PlusOutlined } from '@ant-design/icons'
-import { Button, Drawer, Table, Checkbox, Form, Input } from 'antd'
-import React, { useState } from 'react'
-import { useQuery, useMutation } from '@apollo/client'
-
-import { GET_ACTIVITY, CREATED_ACTIVITY } from '../../schemas'
-
-const columns = [
-	{
-		title: 'Nome',
-		dataIndex: 'nome',
-		key: 'nome',
-	},
-	{
-		title: 'Descrição',
-		dataIndex: 'descricao',
-		key: 'descricao',
-	},
-	{
-		title: 'Valor',
-		dataIndex: 'valor',
-		key: 'valor',
-		render: (valor) => <>R$ {valor}</>,
-	},
-]
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import { Button, Drawer, Table, Form, Input } from "antd";
+import React, { useState } from "react";
+import { useQuery, useMutation } from "@apollo/client";
+import { GET_ACTIVITY, CREATED_ACTIVITY, DELETE_ACTIVITY } from "../../schemas";
 
 export default function Setting() {
-	const [open, setOpen] = useState(false)
+	const [open, setOpen] = useState(false);
 	const showDrawer = () => {
-		setOpen(true)
-	}
+		setOpen(true);
+	};
+
 	const {
 		data: { activities } = {},
 		loading,
 		error,
-	} = useQuery(GET_ACTIVITY)
+	} = useQuery(GET_ACTIVITY);
 
-	const [
-		createActivity,
+	const [createActivity] = useMutation(CREATED_ACTIVITY, {
+		refetchQueries: [GET_ACTIVITY],
+	});
+
+	const [deleteActivity] = useMutation(DELETE_ACTIVITY, {
+		refetchQueries: [GET_ACTIVITY],
+	});
+
+	const columns = [
 		{
-			data: creatActivityData,
-			loading: createActivityLoading,
-			error: createActivityError,
+			title: "Nome",
+			dataIndex: "name",
+			key: "name",
 		},
-	] = useMutation(CREATED_ACTIVITY, { refetchQueries: [GET_ACTIVITY] })
+		{
+			title: "Descrição",
+			dataIndex: "description",
+			key: "description",
+		},
+		{
+			title: "Valor",
+			dataIndex: "price",
+			key: "price",
+			render: (valor) => <>R$ {valor}</>,
+		},
+		{
+			width: 150,
+			fixed: "right",
+			render: ({ _id }) => (
+				<Button
+					onClick={() => {
+						handleDeleteActivity(_id);
+					}}
+					icon={<DeleteOutlined />}
+				/>
+			),
+		},
+	];
 
-	const submit = (props) => createActivity({ variables: props })
+	const submit = (props) => createActivity({ variables: props });
+	const handleDeleteActivity = (_id) => {
+		deleteActivity({
+			variables: { _id },
+		});
+	};
 
 	if (loading) {
-		return <div>Carregando...</div>
+		return <div>Carregando...</div>;
 	}
 
 	if (error) {
-		return <div>Houve um erro ao buscar as informações</div>
+		return <div>Houve um erro ao buscar as informações</div>;
 	}
 
 	const onClose = () => {
-		setOpen(false)
-	}
+		setOpen(false);
+	};
 
 	const onFinish = (values) => {
 		const data = {
-			nome: values.nome,
-			descricao: values.descricao,
-			valor: Number.parseFloat(values.valor),
-		}
+			name: values.name,
+			description: values.description,
+			price: Number.parseFloat(values.price),
+		};
 
-		submit(data)
+		submit(data);
+		setOpen(false);
+	};
 
-		setOpen(false)
-	}
 	const onFinishFailed = (errorInfo) => {
-		console.log('Failed:', errorInfo)
-	}
+		console.log("Failed:", errorInfo);
+	};
 
 	return (
 		<>
 			<div
 				style={{
-					display: 'flex',
-					flexDirection: 'row',
-					justifyContent: 'space-between',
-					marginBottom: '20px',
+					display: "flex",
+					flexDirection: "row",
+					justifyContent: "space-between",
+					marginBottom: "20px",
 				}}
 			>
-				<div style={{ fontSize: '20px' }}>Atividades</div>
+				<div style={{ fontSize: "20px" }}>Atividades</div>
 				<Button icon={<PlusOutlined />} type="primary" onClick={showDrawer}>
 					Nova atividade
 				</Button>
@@ -91,7 +107,7 @@ export default function Setting() {
 			<Table
 				dataSource={activities}
 				columns={columns}
-				rowKey={(record) => record.id}
+				rowKey={(record) => record._id}
 			/>
 
 			<Drawer title="Adicionar nova atividade" onClose={onClose} open={open}>
@@ -115,28 +131,28 @@ export default function Setting() {
 				>
 					<Form.Item
 						label="Nome"
-						name="nome"
+						name="name"
 						rules={[
 							{
 								required: true,
-								message: 'Obrigatório',
+								message: "Obrigatório",
 							},
 						]}
 					>
 						<Input />
 					</Form.Item>
 
-					<Form.Item label="Descrição" name="descricao">
+					<Form.Item label="Descrição" name="description">
 						<Input />
 					</Form.Item>
 
 					<Form.Item
 						label="Valor"
-						name="valor"
+						name="price"
 						rules={[
 							{
 								required: true,
-								message: 'Obrigatório',
+								message: "Obrigatório",
 							},
 						]}
 					>
@@ -156,5 +172,5 @@ export default function Setting() {
 				</Form>
 			</Drawer>
 		</>
-	)
+	);
 }
