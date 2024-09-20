@@ -1,12 +1,4 @@
-import {
-	Button,
-	DatePicker,
-	Divider,
-	Form,
-	Input,
-	Space,
-	Typography,
-} from 'antd'
+import { Button, DatePicker, Divider, Form, Input, Space, Typography } from 'antd'
 
 const { TextArea } = Input
 const { Title, Text } = Typography
@@ -117,11 +109,7 @@ export default function FormsRDO() {
 								},
 							]}
 						>
-							<Input
-								type="text"
-								placeholder="Líder de equipe"
-								name="encarregado"
-							/>
+							<Input type="text" placeholder="Líder de equipe" name="encarregado" />
 						</Form.Item>
 
 						<Form.Item
@@ -133,11 +121,7 @@ export default function FormsRDO() {
 								},
 							]}
 						>
-							<DatePicker
-								format={'DD/MM/YYYY'}
-								placeholder="Data"
-								inputReadOnly={true}
-							/>
+							<DatePicker format={'DD/MM/YYYY'} placeholder="Data" inputReadOnly={true} />
 						</Form.Item>
 					</Space>
 
@@ -152,21 +136,11 @@ export default function FormsRDO() {
 								},
 							]}
 						>
-							<Input
-								addonBefore="Manhã"
-								placeholder="Clima"
-								name="climaManha"
-								onChange={(e) => handleInputChange(e)}
-							/>
+							<Input addonBefore="Manhã" placeholder="Clima" name="climaManha" onChange={(e) => handleInputChange(e)} />
 						</Form.Item>
 
 						<Form.Item>
-							<Input
-								addonBefore="Tarde"
-								placeholder="Clima"
-								name="climaTarde"
-								onChange={(e) => handleInputChange(e)}
-							/>
+							<Input addonBefore="Tarde" placeholder="Clima" name="climaTarde" onChange={(e) => handleInputChange(e)} />
 						</Form.Item>
 					</Space>
 
@@ -186,16 +160,9 @@ export default function FormsRDO() {
 						</Button>
 					</Space>
 
-					<Divider orientation="left">
-						Relatos de desvios e/ou retrabalhos
-					</Divider>
+					<Divider orientation="left">Relatos de desvios e/ou retrabalhos</Divider>
 
-					<TextArea
-						placeholder="..."
-						rows={4}
-						name="observacoes"
-						onChange={(e) => handleInputChange(e)}
-					/>
+					<TextArea placeholder="..." rows={4} name="observacoes" onChange={(e) => handleInputChange(e)} />
 
 					<Space style={{ marginBlock: '10px' }}>
 						<Button type="primary" htmlType="submit">
@@ -208,8 +175,7 @@ export default function FormsRDO() {
 				style={{
 					height: '100vh',
 					width: '100%',
-					background:
-						'linear-gradient(98deg, rgba(115,118,208,1) 0%, rgba(59,59,233,1) 35%, rgba(36,189,221,1) 100%)',
+					background: 'linear-gradient(98deg, rgba(115,118,208,1) 0%, rgba(59,59,233,1) 35%, rgba(36,189,221,1) 100%)',
 				}}
 			/>
 		</div>
