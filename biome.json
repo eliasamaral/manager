@@ -3,6 +3,7 @@
 	"organizeImports": {
 		"enabled": true
 	},
+
 	"linter": {
 		"enabled": true,
 		"rules": {
@@ -13,8 +14,8 @@
 	"javascript": {
 		"formatter": {
 			"semicolons": "asNeeded",
-			"quoteStyle": "single"
+			"quoteStyle": "single",
+			"lineWidth": 129
 		}
 	}
 }
-

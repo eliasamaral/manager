@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client'
 
 export const GET_RDO = gql`
   query ($_id: ID!) {
@@ -26,7 +26,7 @@ export const GET_RDO = gql`
       }
     }
   }
-`;
+`
 
 export const GET_RDOS = gql`
   query {
@@ -36,7 +36,7 @@ export const GET_RDOS = gql`
       dataDaProducao
     }
   }
-`;
+`
 
 export const LOGIN_USER_EMAIL = gql`
   mutation login($loginInput: LoginInput) {
@@ -45,7 +45,7 @@ export const LOGIN_USER_EMAIL = gql`
       token
     }
   }
-`;
+`
 export const GET_ACTIVITY = gql`
   query{
     activities {
@@ -56,7 +56,7 @@ export const GET_ACTIVITY = gql`
     }
 }
 
-`;
+`
 export const CREATED_ACTIVITY = gql`
   mutation (
     $name: String
@@ -73,7 +73,7 @@ export const CREATED_ACTIVITY = gql`
       _id
     }
   }
-`;
+`
 
 export const DELETE_ACTIVITY = gql`
   
@@ -81,4 +81,36 @@ export const DELETE_ACTIVITY = gql`
     deleteActivity(_id: $_id)
 }
 
-`;
+`
+
+export const GET_COLLABORATORS = gql`
+query Collaborators {
+    collaborators {
+        _id
+        name
+        hh
+    }
+}
+
+`
+
+export const DELETE_COLLABORATOR = gql`
+
+mutation ($_id: ID!) {
+    deleteCollaborator(_id: $_id)
+}
+
+`
+
+export const CREATED_COLLABORATOR = gql`
+
+mutation (
+  $name: String
+  $hh: Float
+) {
+    createCollaborator(data: { name: $name, hh: $hh }) {
+        _id
+       
+    }
+}
+`
