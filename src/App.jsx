@@ -10,6 +10,7 @@ import RDO from './pages/RDO'
 import Setting from './pages/setting'
 import Tamplate from './components/Tamplate'
 import FormsRDO from './pages/rdo-forms'
+import Projects from './pages/projects'
 
 function App() {
 	return (
@@ -20,7 +21,8 @@ function App() {
 							<Route element={<PrivateRoute />}>
 								<Route element={<Tamplate />}>
 									<Route path="/" element={<RDO />} />
-									<Route path="/setting" element={<Setting />} />
+									<Route path="/projetos" element={<Projects />} />
+									<Route path="/configurações" element={<Setting />} />
 
 								</Route>
 							</Route>
