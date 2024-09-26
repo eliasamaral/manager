@@ -3,9 +3,9 @@ import { useForm } from 'react-hook-form'
 import { useMutation, useQuery } from '@apollo/client'
 
 import { Button, Modal, Table } from 'antd'
-import { PlusOutlined } from '@ant-design/icons'
+import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 
-import { GET_ACTIVITY, GET_PROJECTS, CREATED_PROJECT } from '../../schemas'
+import { GET_ACTIVITY, GET_PROJECTS, CREATED_PROJECT, DELETE_PROJECT, DELETE_COLLABORATOR } from '../../schemas'
 
 const styles = {
 	input: {
@@ -40,9 +40,7 @@ const styles = {
 		backgroundColor: '#1677ff',
 		cursor: 'pointer',
 	},
-	card: {
-		backgroundColor: '#1677ff',
-	},
+
 }
 const columns = [
 	{
@@ -67,6 +65,14 @@ export default function Projects() {
 		refetchQueries: [GET_PROJECTS],
 		onError: () => notification.error({ message: 'Erro ao criar projeto.' }),
 	})
+
+	const [deleteProject] = useMutation(DELETE_PROJECT, {
+		refetchQueries: [GET_PROJECTS],
+		onError: () => notification.error({ message: 'Erro ao deletar o projeto.' }),
+	})
+
+	const handleDeletarAtividade = (_id) => deleteProject({ variables: { _id } })
+
 
 	const {
 		register,
@@ -137,10 +143,8 @@ export default function Projects() {
 						key={e._id}
 						style={{
 							width: '300px',
-							height: '110px',
 							border: '1px solid #d9d9d9',
 							borderRadius: '10px',
-							padding: '20px',
 							margin: '5px',
 						}}
 					>
@@ -148,12 +152,29 @@ export default function Projects() {
 							style={{
 								fontSize: '16px',
 								fontWeight: '500',
-								marginBottom: '10px',
+								padding: '10px',
 							}}
 						>
 							{e.project}
 						</div>
-						<div>{e.location}</div>
+
+						<div
+							style={{
+								padding: '10px',
+							}}
+						>
+							{e.location}
+						</div>
+
+						<div
+							style={{
+								padding: '10px',
+								display: 'flex',
+								justifyContent: 'end',
+							}}
+						>
+							<Button onClick={()=> handleDeletarAtividade(e._id)} icon={<DeleteOutlined />} type="primary" />
+						</div>
 					</div>
 				))}
 			</div>

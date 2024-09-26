@@ -133,3 +133,8 @@ mutation  ( $project: String, $location: String, $activities: [String!] ){
 }}
 
 `
+export const DELETE_PROJECT = gql`
+ mutation ($_id: ID!) {
+    deleteProject(_id: $_id)
+}
+`
