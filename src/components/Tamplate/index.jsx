@@ -5,7 +5,7 @@ import { Layout, theme, Menu, Typography, Divider } from 'antd'
 import { HeaderBar as Header } from '../Header'
 import { useNavigate } from 'react-router-dom'
 
-import { AreaChartOutlined, SettingOutlined } from '@ant-design/icons'
+import { AreaChartOutlined, FundProjectionScreenOutlined, SettingOutlined } from '@ant-design/icons'
 
 const { Content, Sider } = Layout
 const { Title } = Typography
@@ -44,13 +44,18 @@ function Tamplate() {
 					onClick={handleMenuClick}
 					items={[
 						{
-							label: 'Relatorios de Obra',
+							label: 'Projetos',
+							key: '/projetos',
+							icon:<FundProjectionScreenOutlined />,
+						},
+						{
+							label: 'Relatórios de Obra',
 							key: '/',
 							icon: <AreaChartOutlined />,
 						},
 						{
-							label: 'Configuração',
-							key: '/setting',
+							label: 'Ajustes',
+							key: '/configurações',
 							icon: <SettingOutlined />,
 						},
 					]}

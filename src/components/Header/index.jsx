@@ -24,16 +24,11 @@ export function HeaderBar() {
 
 	const routeTitles = {
 		'/': 'Dashboard',
-		'/projetos': 'Carteira de obras',
 		'/projetos/createProject': 'Criar novo projeto',
 		'/rdo': 'Relatórios de Obra',
 		'/ads': 'ADS Digital',
-		'/codigos': 'Códigos',
-		'/contratos': 'Contratos',
-		'/pagamentos': 'Pagamentos',
-		'/kanban': 'Kanban',
-		'/cadastrar-usuario': 'Cadastrar Usuario',
-		'/setting': 'Configuração',
+		'/configurações': 'Configuração',
+		'/projetos': 'Projetos',
 	}
 
 	const currentRoute = location.pathname

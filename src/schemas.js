@@ -114,3 +114,22 @@ mutation (
     }
 }
 `
+export const GET_PROJECTS = gql`
+query Projects {
+    projects {
+        _id
+        project
+        location
+        activities
+    }
+}
+`
+
+export const CREATED_PROJECT = gql`
+mutation  ( $project: String, $location: String, $activities: [String!] ){
+  createProject(data: { project: $project, location: $location, activities: $activities }) {
+      _id
+    
+}}
+
+`
