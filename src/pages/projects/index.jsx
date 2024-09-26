@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 
 import { Button, Modal, Table } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 
-import { GET_ACTIVITY } from '../../schemas'
+import { GET_ACTIVITY, GET_PROJECTS, CREATED_PROJECT } from '../../schemas'
 
 const styles = {
 	input: {
@@ -40,6 +40,9 @@ const styles = {
 		backgroundColor: '#1677ff',
 		cursor: 'pointer',
 	},
+	card: {
+		backgroundColor: '#1677ff',
+	},
 }
 const columns = [
 	{
@@ -58,6 +61,12 @@ const columns = [
 ]
 export default function Projects() {
 	const { data: atividadesData, loading: carregandoAtividades, error: erroAtividades } = useQuery(GET_ACTIVITY)
+	const { data: projetosData, loading: carregandoProjetos, error: erroProjetos } = useQuery(GET_PROJECTS)
+
+	const [createProject, { data: projectCreatedSuccess, loading, error }] = useMutation(CREATED_PROJECT, {
+		refetchQueries: [GET_PROJECTS],
+		onError: () => notification.error({ message: 'Erro ao criar projeto.' }),
+	})
 
 	const {
 		register,
@@ -88,23 +97,26 @@ export default function Projects() {
 
 	const handleAllSelectedActivities = (record) => {
 		if (record) {
-			setSelectedActivities(activities.map((activity) => activity._id))
+			setSelectedActivities(selectedActivities.map((activity) => activity._id))
 		} else {
 			setSelectedActivities([])
 		}
 	}
 
-	const onSubmit = (data) => {
+	const onSubmit = (event) => {
 		const newData = {
-			project: data.project,
-			location: data.location,
+			project: event.project,
+			location: event.location,
 			activities: selectedActivities,
 		}
 
-		console.log(newData)
+		createProject({ variables: newData })
+		if (projectCreatedSuccess) {
+			setIsModalOpen(false)
+		}
 	}
 
-	if (carregandoAtividades) return <div>Carregando...</div>
+	if (carregandoAtividades || carregandoProjetos) return <div>Carregando...</div>
 
 	return (
 		<>
@@ -118,6 +130,32 @@ export default function Projects() {
 				<Button icon={<PlusOutlined />} type="primary" onClick={showModal}>
 					Nova projeto
 				</Button>
+			</div>
+			<div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+				{projetosData?.projects.map((e) => (
+					<div
+						key={e._id}
+						style={{
+							width: '300px',
+							height: '110px',
+							border: '1px solid #d9d9d9',
+							borderRadius: '10px',
+							padding: '20px',
+							margin: '5px',
+						}}
+					>
+						<div
+							style={{
+								fontSize: '16px',
+								fontWeight: '500',
+								marginBottom: '10px',
+							}}
+						>
+							{e.project}
+						</div>
+						<div>{e.location}</div>
+					</div>
+				))}
 			</div>
 
 			<Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null} style={{ display: 'flex' }}>
@@ -134,6 +172,7 @@ export default function Projects() {
 							<div style={{ fontSize: '17px', marginBlock: '20px' }}>Selecione os serviços a serem executados.</div>
 							<Table
 								size="small"
+								rowKey={(record) => record._id}
 								columns={columns}
 								dataSource={atividadesData?.activities}
 								pagination={false}

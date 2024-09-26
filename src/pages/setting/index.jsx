@@ -123,7 +123,7 @@ export default function Configuracoes() {
 			</div>
 			<Table
 				dataSource={atividadesData?.activities}
-				rowKey="_id"
+				rowKey={(record) => record._id}
 				pagination={false}
 				columns={[
 					{ title: 'Nome', dataIndex: 'name', key: 'name' },
@@ -155,7 +155,7 @@ export default function Configuracoes() {
 			</div>
 			<Table
 				dataSource={colaboradoresData?.collaborators}
-				rowKey="_id"
+				rowKey={(record) => record._id}
 				pagination={false}
 				columns={[
 					{ title: 'Nome', dataIndex: 'name', key: 'name' },
