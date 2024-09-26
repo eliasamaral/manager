@@ -49,12 +49,12 @@ function Tamplate() {
 							icon:<FundProjectionScreenOutlined />,
 						},
 						{
-							label: 'Relatorios de Obra',
+							label: 'Relatórios de Obra',
 							key: '/',
 							icon: <AreaChartOutlined />,
 						},
 						{
-							label: 'Configuração',
+							label: 'Ajustes',
 							key: '/configurações',
 							icon: <SettingOutlined />,
 						},

@@ -104,25 +104,17 @@ export default function RDODigital({ RDOfiltrado }) {
 				}
 			>
 				<Descriptions.Item label="Projeto">{getRDO.projeto}</Descriptions.Item>
-				<Descriptions.Item label="Líder">
-					{getRDO.encarregado}
-				</Descriptions.Item>
+				<Descriptions.Item label="Líder">{getRDO.encarregado}</Descriptions.Item>
 				<Descriptions.Item label="Local">{getRDO.local}</Descriptions.Item>
-				<Descriptions.Item label="Data">
-					{getRDO.dataDaProducao}
-				</Descriptions.Item>
+				<Descriptions.Item label="Data">{getRDO.dataDaProducao}</Descriptions.Item>
 			</Descriptions>
 
 			<Descriptions>
-				<Descriptions.Item label="Manhã">
-					{getRDO.clima.manha}
-				</Descriptions.Item>
-				<Descriptions.Item label="Tarde">
-					{getRDO.clima.tarde}
-				</Descriptions.Item>
+				<Descriptions.Item label="Manhã">{getRDO.clima.manha}</Descriptions.Item>
+				<Descriptions.Item label="Tarde">{getRDO.clima.tarde}</Descriptions.Item>
 			</Descriptions>
 
-			<Divider orientation={'left'}>Mão de obra</Divider>
+			<Divider orientation={'left'}>Serviços executados</Divider>
 
 			<Table
 				dataSource={getRDO.atividades}
@@ -132,7 +124,7 @@ export default function RDODigital({ RDOfiltrado }) {
 				scroll={{ y: '30vh' }}
 			/>
 
-			<Divider orientation={'left'}>Serviços executados</Divider>
+			<Divider orientation={'left'}>Mão de obra</Divider>
 
 			<Table
 				dataSource={getRDO.maoDeObra}
@@ -144,11 +136,7 @@ export default function RDODigital({ RDOfiltrado }) {
 
 			<Divider orientation={'left'}>Observações</Divider>
 
-			<Alert
-				description={getRDO.observacoes}
-				type="info"
-				style={{ marginBottom: '20px' }}
-			/>
+			<Alert description={getRDO.observacoes} type="info" style={{ marginBottom: '20px' }} />
 
 			<div
 				style={{

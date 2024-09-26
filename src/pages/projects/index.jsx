@@ -128,7 +128,7 @@ export default function Projects() {
 				}}
 			>
 				<Button icon={<PlusOutlined />} type="primary" onClick={showModal}>
-					Nova projeto
+					Novo projeto
 				</Button>
 			</div>
 			<div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
