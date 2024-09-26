@@ -63,7 +63,7 @@ export default function Projects() {
 	const { data: atividadesData, loading: carregandoAtividades, error: erroAtividades } = useQuery(GET_ACTIVITY)
 	const { data: projetosData, loading: carregandoProjetos, error: erroProjetos } = useQuery(GET_PROJECTS)
 
-	const [createProject, { data: projectCreatedSuccess, loading, error }] = useMutation(CREATED_PROJECT, {
+	const [createProject, { data: projectCreatedSuccess, loading: projectCreatedLoading, error }] = useMutation(CREATED_PROJECT, {
 		refetchQueries: [GET_PROJECTS],
 		onError: () => notification.error({ message: 'Erro ao criar projeto.' }),
 	})
@@ -189,7 +189,9 @@ export default function Projects() {
 								}}
 							/>
 						</div>
-						<input type="submit" style={styles.button} value={'Salvar projeto'} />
+						<button type="submit" style={styles.button} disabled={projectCreatedLoading}>
+							{projectCreatedLoading ? 'Enviando...' : 'Salvar projeto'}
+						</button>
 					</form>
 				</div>
 			</Modal>
