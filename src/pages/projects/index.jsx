@@ -1,10 +1,49 @@
 import React, { useState } from 'react'
-import { Button, Modal, Checkbox, Form, Input, Radio, Space, Switch, Table } from 'antd'
-import { PlusOutlined, DownOutlined } from '@ant-design/icons'
+import { useForm } from 'react-hook-form'
+import { useQuery } from '@apollo/client'
 
+import { Button, Modal, Table } from 'antd'
+import { PlusOutlined } from '@ant-design/icons'
+
+import { GET_ACTIVITY } from '../../schemas'
+
+const styles = {
+	input: {
+		boxSizing: 'border-box',
+		margin: '0',
+		padding: '4px 11px',
+		color: 'rgba(0, 0, 0, 0.88)',
+		fontSize: '14px',
+		position: 'relative',
+		display: 'inline-block',
+		width: ' 100%',
+		transition: 'all 0.2s',
+		borderRadius: '6px',
+		border: '1px solid #d9d9d9',
+		marginBottom: '10px',
+		lineHeight: '1.5714285714285714',
+	},
+
+	button: {
+		boxSizing: 'border-box',
+		marginBlock: '20px',
+		padding: '4px 11px',
+		color: 'rgba(255, 255, 255, 0.88)',
+		fontSize: '14px',
+		position: 'relative',
+		display: 'inline-block',
+		transition: 'all 0.2s',
+		borderRadius: '6px',
+		border: '1px solid #d9d9d9',
+		marginBottom: '10px',
+		lineHeight: '1.5714285714285714',
+		backgroundColor: '#1677ff',
+		cursor: 'pointer',
+	},
+}
 const columns = [
 	{
-		title: 'Name',
+		title: 'Nome',
 		dataIndex: 'name',
 	},
 	{
@@ -14,16 +53,19 @@ const columns = [
 	{
 		title: 'Preço',
 		dataIndex: 'price',
+		width: 70,
 	},
 ]
-
-const activities = [
-	{ key: '1', _id: '66f1b81c132d7cebed77909f', name: 'a1', description: 'd1', price: 1 },
-	{ key: '2', _id: '66f31d6646b3e47c4a785c5c', name: 'dfg', description: 'fg', price: 77 },
-]
-
 export default function Projects() {
-	const [isModalOpen, setIsModalOpen] = useState(true)
+	const { data: atividadesData, loading: carregandoAtividades, error: erroAtividades } = useQuery(GET_ACTIVITY)
+
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm()
+
+	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [selectedActivities, setSelectedActivities] = useState([])
 	const showModal = () => {
 		setIsModalOpen(true)
@@ -33,12 +75,6 @@ export default function Projects() {
 	}
 	const handleCancel = () => {
 		setIsModalOpen(false)
-	}
-	const onFinish = (values) => {
-		console.log('Success:', values)
-	}
-	const onFinishFailed = (errorInfo) => {
-		console.log('Failed:', errorInfo)
 	}
 
 	const handleSelectedActivities = (record) => {
@@ -50,7 +86,6 @@ export default function Projects() {
 		})
 	}
 
-
 	const handleAllSelectedActivities = (record) => {
 		if (record) {
 			setSelectedActivities(activities.map((activity) => activity._id))
@@ -59,7 +94,17 @@ export default function Projects() {
 		}
 	}
 
-	console.log('Selected Activities:', selectedActivities)
+	const onSubmit = (data) => {
+		const newData = {
+			project: data.project,
+			location: data.location,
+			activities: selectedActivities,
+		}
+
+		console.log(newData)
+	}
+
+	if (carregandoAtividades) return <div>Carregando...</div>
 
 	return (
 		<>
@@ -75,61 +120,39 @@ export default function Projects() {
 				</Button>
 			</div>
 
-			<Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-				<Form
-					name="basic"
-					labelCol={{
-						span: 8,
-					}}
-					wrapperCol={{
-						span: 16,
-					}}
-					style={{
-						maxWidth: 600,
-					}}
-					initialValues={{
-						remember: true,
-					}}
-					onFinish={onFinish}
-					onFinishFailed={onFinishFailed}
-					autoComplete="off"
-				>
-					<Form.Item
-						label="Username"
-						name="username"
-						rules={[
-							{
-								required: true,
-								message: 'Please input your username!',
-							},
-						]}
-					>
-						<Input />
-					</Form.Item>
+			<Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null} style={{ display: 'flex' }}>
+				<div style={{ display: 'flex', flexDirection: 'column', padding: '10px' }}>
+					<div style={{ fontSize: '18px', marginBlock: '20px' }}>Criar novo projeto</div>
 
-					<Form.Item
-						wrapperCol={{
-							offset: 8,
-							span: 16,
-						}}
-					>
-						<Button type="primary" htmlType="submit">
-							Submit
-						</Button>
-					</Form.Item>
-				</Form>
-				<Table
-					columns={columns}
-					dataSource={activities}
-					rowSelection={{
-						onSelect: (record) => {
-							handleSelectedActivities(record)
-						},
-						onSelectAll: (record) => {
-							handleAllSelectedActivities(record)
-						},
-					}}
-				/>
+					<form onSubmit={handleSubmit(onSubmit)}>
+						<input {...register('project', { required: true })} placeholder="Projeto" style={styles.input} />
+
+						<input {...register('location', { required: true })} placeholder="Local" style={styles.input} />
+						{errors.exampleRequired && <span>Obrigatorio</span>}
+
+						<div style={{ width: '600px' }}>
+							<div style={{ fontSize: '17px', marginBlock: '20px' }}>Selecione os serviços a serem executados.</div>
+							<Table
+								size="small"
+								columns={columns}
+								dataSource={atividadesData?.activities}
+								pagination={false}
+								scroll={{
+									y: 400,
+								}}
+								rowSelection={{
+									onSelect: (record) => {
+										handleSelectedActivities(record)
+									},
+									onSelectAll: (record) => {
+										handleAllSelectedActivities(record)
+									},
+								}}
+							/>
+						</div>
+						<input type="submit" style={styles.button} value={'Salvar projeto'} />
+					</form>
+				</div>
 			</Modal>
 		</>
 	)

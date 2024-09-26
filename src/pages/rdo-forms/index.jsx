@@ -1,7 +1,7 @@
 import { Button, DatePicker, Divider, Form, Input, Space, Typography } from 'antd'
 
 const { TextArea } = Input
-const { Title, Text } = Typography
+const { Title } = Typography
 
 export default function FormsRDO() {
 	const handleAtividadeChange = (e) => {
