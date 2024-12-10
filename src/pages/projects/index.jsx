@@ -63,7 +63,7 @@ export default function Projects() {
 
 	const [createProject, { data: projectCreatedSuccess, loading: projectCreatedLoading, error }] = useMutation(CREATED_PROJECT, {
 		refetchQueries: [GET_PROJECTS],
-		onError: () => notification.error({ message: 'Erro ao criar projeto.' }),
+		onError: (error) => notification.error({ message: 'Erro ao criar projeto.', error }),
 	})
 
 	const [deleteProject] = useMutation(DELETE_PROJECT, {
@@ -115,6 +115,9 @@ export default function Projects() {
 			location: event.location,
 			activities: selectedActivities,
 		}
+
+		console.log("Sucesso", projectCreatedSuccess);
+		
 
 		createProject({ variables: newData })
 		if (projectCreatedSuccess) {

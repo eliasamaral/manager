@@ -1,12 +1,25 @@
-import { Button, DatePicker, Divider, Form, Input, Space, Typography } from 'antd'
+import { useEffect } from 'react'
+import { useQuery } from '@apollo/client'
+import { GET_PROJECTS, GET_COLLABORATORS, GET_ACTIVITY } from '../../schemas'
+
+import { Button, DatePicker, Divider, Form, Input, Space, Typography, Select } from 'antd'
 
 const { TextArea } = Input
 const { Title } = Typography
+const { Option } = Select
+
+const onFinish = (values) => {
+	console.log('Success:', values)
+}
+const onFinishFailed = (errorInfo) => {
+	console.log('Failed:', errorInfo)
+}
 
 export default function FormsRDO() {
-	const handleAtividadeChange = (e) => {
-		console.log(e)
-	}
+	const { data: projetosData, loading: carregandoProjetos, error: erroProjetos } = useQuery(GET_PROJECTS)
+	const { data: collaboratorsData, loading: carregandocollaborators, error: errocollaborators } = useQuery(GET_COLLABORATORS)
+	const { data: activityData, loading: carregandoActivity, error: erroActivity } = useQuery(GET_ACTIVITY)
+
 	return (
 		<div
 			style={{
@@ -28,8 +41,10 @@ export default function FormsRDO() {
 					labelCol={{ span: 8 }}
 					wrapperCol={{ span: 16 }}
 					style={{ maxWidth: 600, margin: '20px 10px' }}
-					initialValues={{ remember: false }}
+					initialValues={{ remember: true }}
 					autoComplete="off"
+					onFinish={onFinish}
+					onFinishFailed={onFinishFailed}
 				>
 					<Space
 						style={{
@@ -64,13 +79,20 @@ export default function FormsRDO() {
 							name="projeto"
 							rules={[
 								{
-									required: false,
+									required: true,
 									message: 'Obrigatorio!',
 								},
 							]}
+							noStyle
 							style={{ margin: '0px' }}
 						>
-							<Input name="projeto" onChange={(e) => handleInputChange(e)} />
+							<Select placeholder="Projeto" onChange={(e) => console.log(e)} allowClear dropdownStyle={{ width: 'auto' }}>
+								{projetosData?.projects.map((e) => (
+									<Option key={e._id} value={e._id}>
+										{e.project}
+									</Option>
+								))}
+							</Select>
 						</Form.Item>
 					</Space>
 
@@ -79,6 +101,7 @@ export default function FormsRDO() {
 							display: 'flex',
 							alignItems: 'center',
 							justifyContent: 'space-between',
+							marginBlock: '10px',
 						}}
 					>
 						<Title type="secondary" level={5} style={{ margin: '0px' }}>
@@ -88,15 +111,16 @@ export default function FormsRDO() {
 							name="local"
 							rules={[
 								{
-									required: false,
+									required: true,
 									message: 'Obrigatorio!',
 								},
 							]}
-							style={{ margin: '0px' }}
+							noStyle
 						>
 							<Input name="local" onChange={(e) => handleInputChange(e)} />
 						</Form.Item>
 					</Space>
+
 					<Divider orientation="left">Informante</Divider>
 
 					<Space>
@@ -104,19 +128,30 @@ export default function FormsRDO() {
 							name="encarregado"
 							rules={[
 								{
-									required: false,
+									required: true,
 									message: 'Obrigatorio!',
 								},
 							]}
 						>
-							<Input type="text" placeholder="Líder de equipe" name="encarregado" />
+							<Select
+								placeholder="Líder de equipe"
+								onChange={(e) => console.log(e)}
+								allowClear
+								dropdownStyle={{ width: 'auto' }}
+							>
+								{collaboratorsData?.collaborators.map((e) => (
+									<Option key={e._id} value={e._id}>
+										{e.name}
+									</Option>
+								))}
+							</Select>
 						</Form.Item>
 
 						<Form.Item
 							name="data"
 							rules={[
 								{
-									required: false,
+									required: true,
 									message: 'Obrigatorio!',
 								},
 							]}
