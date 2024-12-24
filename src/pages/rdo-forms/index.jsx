@@ -1,8 +1,18 @@
-import { useEffect } from 'react'
 import { useQuery } from '@apollo/client'
 import { GET_PROJECTS, GET_COLLABORATORS, GET_ACTIVITY } from '../../schemas'
 
-import { Button, DatePicker, Divider, Form, Input, Space, Typography, Select } from 'antd'
+import {
+	Button,
+	DatePicker,
+	Divider,
+	Form,
+	Input,
+	Space,
+	Typography,
+	Select,
+} from 'antd'
+import AddActivityModal from '../../components/AddActivityModal'
+import { useState } from 'react'
 
 const { TextArea } = Input
 const { Title } = Typography
@@ -16,9 +26,34 @@ const onFinishFailed = (errorInfo) => {
 }
 
 export default function FormsRDO() {
-	const { data: projetosData, loading: carregandoProjetos, error: erroProjetos } = useQuery(GET_PROJECTS)
-	const { data: collaboratorsData, loading: carregandocollaborators, error: errocollaborators } = useQuery(GET_COLLABORATORS)
-	const { data: activityData, loading: carregandoActivity, error: erroActivity } = useQuery(GET_ACTIVITY)
+	const {
+		data: projetosData,
+		loading: carregandoProjetos,
+		error: erroProjetos,
+	} = useQuery(GET_PROJECTS)
+
+	const {
+		data: collaboratorsData,
+		loading: carregandocollaborators,
+		error: errocollaborators,
+	} = useQuery(GET_COLLABORATORS)
+	const {
+		data: activityData,
+		loading: carregandoActivity,
+		error: erroActivity,
+	} = useQuery(GET_ACTIVITY)
+
+	const [isModalOpen, setIsModalOpen] = useState(false)
+
+	const showModal = () => {
+		setIsModalOpen(true)
+	}
+	const handleOk = () => {
+		setIsModalOpen(false)
+	}
+	const handleCancel = () => {
+		setIsModalOpen(false)
+	}
 
 	return (
 		<div
@@ -56,14 +91,11 @@ export default function FormsRDO() {
 						<Title level={4} style={{ margin: '0px' }}>
 							Relatório de obras
 						</Title>
-
 						<Button type="primary" htmlType="submit">
 							Enviar
 						</Button>
 					</Space>
-
 					<Divider />
-
 					<Space
 						style={{
 							display: 'flex',
@@ -84,40 +116,19 @@ export default function FormsRDO() {
 								},
 							]}
 							noStyle
-							style={{ margin: '0px' }}
 						>
-							<Select placeholder="Projeto" onChange={(e) => console.log(e)} allowClear dropdownStyle={{ width: 'auto' }}>
+							<Select
+								placeholder="Projeto"
+								onChange={(e) => console.log(e)}
+								allowClear
+								dropdownStyle={{ width: 'auto' }}
+							>
 								{projetosData?.projects.map((e) => (
 									<Option key={e._id} value={e._id}>
-										{e.project}
+										{e.location} - {e.project}
 									</Option>
 								))}
 							</Select>
-						</Form.Item>
-					</Space>
-
-					<Space
-						style={{
-							display: 'flex',
-							alignItems: 'center',
-							justifyContent: 'space-between',
-							marginBlock: '10px',
-						}}
-					>
-						<Title type="secondary" level={5} style={{ margin: '0px' }}>
-							Local
-						</Title>
-						<Form.Item
-							name="local"
-							rules={[
-								{
-									required: true,
-									message: 'Obrigatorio!',
-								},
-							]}
-							noStyle
-						>
-							<Input name="local" onChange={(e) => handleInputChange(e)} />
 						</Form.Item>
 					</Space>
 
@@ -126,6 +137,7 @@ export default function FormsRDO() {
 					<Space>
 						<Form.Item
 							name="encarregado"
+							noStyle
 							rules={[
 								{
 									required: true,
@@ -149,6 +161,7 @@ export default function FormsRDO() {
 
 						<Form.Item
 							name="data"
+							noStyle
 							rules={[
 								{
 									required: true,
@@ -156,7 +169,11 @@ export default function FormsRDO() {
 								},
 							]}
 						>
-							<DatePicker format={'DD/MM/YYYY'} placeholder="Data" inputReadOnly={true} />
+							<DatePicker
+								format={'DD/MM/YYYY'}
+								placeholder="Data"
+								inputReadOnly={true}
+							/>
 						</Form.Item>
 					</Space>
 
@@ -171,11 +188,21 @@ export default function FormsRDO() {
 								},
 							]}
 						>
-							<Input addonBefore="Manhã" placeholder="Clima" name="climaManha" onChange={(e) => handleInputChange(e)} />
+							<Input
+								addonBefore="Manhã"
+								placeholder="Clima"
+								name="climaManha"
+								onChange={(e) => handleInputChange(e)}
+							/>
 						</Form.Item>
 
 						<Form.Item>
-							<Input addonBefore="Tarde" placeholder="Clima" name="climaTarde" onChange={(e) => handleInputChange(e)} />
+							<Input
+								addonBefore="Tarde"
+								placeholder="Clima"
+								name="climaTarde"
+								onChange={(e) => handleInputChange(e)}
+							/>
 						</Form.Item>
 					</Space>
 
@@ -189,15 +216,28 @@ export default function FormsRDO() {
 
 					<Divider orientation="left">Atividades</Divider>
 
+					<AddActivityModal
+						isModalOpen={isModalOpen}
+						handleOk={handleOk}
+						handleCancel={handleCancel}
+					/>
+
 					<Space>
-						<Button onClick={''} type="default">
+						<Button onClick={showModal} type="default">
 							Adicionar
 						</Button>
 					</Space>
 
-					<Divider orientation="left">Relatos de desvios e/ou retrabalhos</Divider>
+					<Divider orientation="left">
+						Relatos de desvios e/ou retrabalhos
+					</Divider>
 
-					<TextArea placeholder="..." rows={4} name="observacoes" onChange={(e) => handleInputChange(e)} />
+					<TextArea
+						placeholder="..."
+						rows={4}
+						name="observacoes"
+						onChange={(e) => handleInputChange(e)}
+					/>
 
 					<Space style={{ marginBlock: '10px' }}>
 						<Button type="primary" htmlType="submit">
@@ -210,7 +250,7 @@ export default function FormsRDO() {
 				style={{
 					height: '100vh',
 					width: '100%',
-					background: 'linear-gradient(98deg, rgba(115,118,208,1) 0%, rgba(59,59,233,1) 35%, rgba(36,189,221,1) 100%)',
+					backgroundColor: '#f0f2f5',
 				}}
 			/>
 		</div>

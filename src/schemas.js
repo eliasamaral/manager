@@ -138,3 +138,9 @@ export const DELETE_PROJECT = gql`
     deleteProject(_id: $_id)
 }
 `
+
+export const CREATED_URL_SIGNED = gql`
+  mutation ($contentType: String!, $key: String!) {
+    generateSignedUrl(contentType: $contentType, key:$key)
+  }
+`

@@ -16,6 +16,7 @@
 		"@hookform/resolvers": "^3.3.4",
 		"@vis.gl/react-google-maps": "^0.7.0",
 		"antd": "^5.14.1",
+		"axios": "^1.7.9",
 		"jspdf": "^2.5.1",
 		"jspdf-autotable": "^3.8.3",
 		"jwt-decode": "^4.0.0",
