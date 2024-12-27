@@ -1,6 +1,6 @@
-import React, { useMemo, useState } from 'react'
 import { Calendar, Space, Spin, Tag } from 'antd'
 import dayjs from 'dayjs'
+import React, { useMemo, useState } from 'react'
 import 'dayjs/locale/pt-br'
 import { useQuery } from '@apollo/client'
 import { GET_RDOS } from '../../schemas'
@@ -51,10 +51,7 @@ function CalendarioRDO() {
 
 	return (
 		<div style={{ display: 'flex', flexDirection: 'row' }}>
-			<Calendar
-				className="calendar-container"
-				cellRender={renderCell}
-			/>
+			<Calendar className="calendar-container" cellRender={renderCell} />
 			{RDOfiltrado && (
 				<Space>
 					<RDODigital RDOfiltrado={RDOfiltrado} />

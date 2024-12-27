@@ -1,8 +1,8 @@
-import React from 'react'
-import { Button, Descriptions, Divider, Space, Spin, Table } from 'antd'
 import { useQuery } from '@apollo/client'
-import { GET_RDO } from '../../schemas'
+import { Button, Descriptions, Divider, Space, Spin, Table } from 'antd'
 import Alert from 'antd/es/alert/Alert'
+import React from 'react'
+import { GET_RDO } from '../../schemas'
 
 import { exportPDF } from '../../utility/exportPDF'
 
@@ -104,14 +104,22 @@ export default function RDODigital({ RDOfiltrado }) {
 				}
 			>
 				<Descriptions.Item label="Projeto">{getRDO.projeto}</Descriptions.Item>
-				<Descriptions.Item label="Líder">{getRDO.encarregado}</Descriptions.Item>
+				<Descriptions.Item label="Líder">
+					{getRDO.encarregado}
+				</Descriptions.Item>
 				<Descriptions.Item label="Local">{getRDO.local}</Descriptions.Item>
-				<Descriptions.Item label="Data">{getRDO.dataDaProducao}</Descriptions.Item>
+				<Descriptions.Item label="Data">
+					{getRDO.dataDaProducao}
+				</Descriptions.Item>
 			</Descriptions>
 
 			<Descriptions>
-				<Descriptions.Item label="Manhã">{getRDO.clima.manha}</Descriptions.Item>
-				<Descriptions.Item label="Tarde">{getRDO.clima.tarde}</Descriptions.Item>
+				<Descriptions.Item label="Manhã">
+					{getRDO.clima.manha}
+				</Descriptions.Item>
+				<Descriptions.Item label="Tarde">
+					{getRDO.clima.tarde}
+				</Descriptions.Item>
 			</Descriptions>
 
 			<Divider orientation={'left'}>Serviços executados</Divider>
@@ -136,7 +144,11 @@ export default function RDODigital({ RDOfiltrado }) {
 
 			<Divider orientation={'left'}>Observações</Divider>
 
-			<Alert description={getRDO.observacoes} type="info" style={{ marginBottom: '20px' }} />
+			<Alert
+				description={getRDO.observacoes}
+				type="info"
+				style={{ marginBottom: '20px' }}
+			/>
 
 			<div
 				style={{

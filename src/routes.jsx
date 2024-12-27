@@ -7,5 +7,3 @@ export const PrivateRoute = () => {
 
 	return user ? <Outlet /> : <Navigate to="/login" />
 }
-
-

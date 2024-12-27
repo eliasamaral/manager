@@ -2,8 +2,8 @@ import React, { useContext } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../utility/context/authContext'
 
-import { Layout, Button, Typography, Space, theme } from 'antd'
 import { LogoutOutlined } from '@ant-design/icons'
+import { Button, Layout, Space, Typography, theme } from 'antd'
 
 const { Header } = Layout
 const { Title } = Typography

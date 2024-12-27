@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import { Modal, Space } from 'antd'
 import { QuestionCircleOutlined } from '@ant-design/icons'
+import { Modal, Space } from 'antd'
 import { FloatButton } from 'antd'
+import React, { useState } from 'react'
 
 import CalendarioRDO from '../../components/CalendarioRDO'
 
@@ -33,11 +33,7 @@ function RDO() {
 				}}
 				onClick={showModal}
 			/>
-			<Modal
-				open={isModalOpen}
-				onOk={handleOk}
-				onCancel={handleCancel}
-			>
+			<Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
 				<a alt="linkRDO" href="https://rdo-digital.vercel.app/generica">
 					Link RDO Digital
 				</a>

@@ -1,11 +1,15 @@
+import { Divider, Layout, Menu, Typography, theme } from 'antd'
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import { Layout, theme, Menu, Typography, Divider } from 'antd'
 
-import { HeaderBar as Header } from '../Header'
 import { useNavigate } from 'react-router-dom'
+import { HeaderBar as Header } from '../Header'
 
-import { AreaChartOutlined, FundProjectionScreenOutlined, SettingOutlined } from '@ant-design/icons'
+import {
+	AreaChartOutlined,
+	FundProjectionScreenOutlined,
+	SettingOutlined,
+} from '@ant-design/icons'
 
 const { Content, Sider } = Layout
 const { Title } = Typography
@@ -46,7 +50,7 @@ function Tamplate() {
 						{
 							label: 'Projetos',
 							key: '/projetos',
-							icon:<FundProjectionScreenOutlined />,
+							icon: <FundProjectionScreenOutlined />,
 						},
 						{
 							label: 'Relatórios de Obra',
