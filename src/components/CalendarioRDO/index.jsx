@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { Calendar, Space, Spin, Tag } from 'antd'
 import dayjs from 'dayjs'
-import locale from 'antd/es/date-picker/locale/pt_BR'
 import 'dayjs/locale/pt-br'
 import { useQuery } from '@apollo/client'
 import { GET_RDOS } from '../../schemas'
@@ -54,7 +53,6 @@ function CalendarioRDO() {
 		<div style={{ display: 'flex', flexDirection: 'row' }}>
 			<Calendar
 				className="calendar-container"
-				locale={locale}
 				cellRender={renderCell}
 			/>
 			{RDOfiltrado && (
