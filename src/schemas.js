@@ -46,101 +46,113 @@ export const LOGIN_USER_EMAIL = gql`
     }
   }
 `
-export const GET_ACTIVITY = gql`
-  query{
-    activities {
-        _id
-        name
-        description
-        price
-    }
-}
 
+export const GET_ACTIVITY = gql`
+  query {
+    activities {
+      _id
+      name
+      description
+      price
+    }
+  }
 `
+
 export const CREATED_ACTIVITY = gql`
-  mutation (
-    $name: String
-    $description: String
-    $price: Float
-  ) {
-    createActivity (
-      data: { 
-        name: $name
-        description: $description
-        price: $price
-      }
-    ) {
+  mutation($name: String, $description: String, $price: Float) {
+    createActivity(data: { name: $name, description: $description, price: $price }) {
       _id
     }
   }
 `
 
 export const DELETE_ACTIVITY = gql`
-  
-  mutation($_id: ID!){
+  mutation($_id: ID!) {
     deleteActivity(_id: $_id)
-}
-
+  }
 `
 
 export const GET_COLLABORATORS = gql`
-query Collaborators {
+  query Collaborators {
     collaborators {
-        _id
-        name
-        hh
+      _id
+      name
+      hh
     }
-}
-
+  }
 `
 
 export const DELETE_COLLABORATOR = gql`
-
-mutation ($_id: ID!) {
+  mutation($_id: ID!) {
     deleteCollaborator(_id: $_id)
-}
-
+  }
 `
 
 export const CREATED_COLLABORATOR = gql`
-
-mutation (
-  $name: String
-  $hh: Float
-) {
+  mutation($name: String, $hh: Float) {
     createCollaborator(data: { name: $name, hh: $hh }) {
-        _id
-       
+      _id
     }
-}
+  }
 `
+
 export const GET_PROJECTS = gql`
-query Projects {
+  query Projects {
     projects {
-        _id
-        project
-        location
-        activities
+      _id
+      project
+      location
+      activities
     }
-}
+  }
 `
 
 export const CREATED_PROJECT = gql`
-mutation  ( $project: String, $location: String, $activities: [String!] ){
-  createProject(data: { project: $project, location: $location, activities: $activities }) {
+  mutation($project: String, $location: String, $activities: [String!]) {
+    createProject(data: { project: $project, location: $location, activities: $activities }) {
       _id
-    
-}}
-
+    }
+  }
 `
+
 export const DELETE_PROJECT = gql`
- mutation ($_id: ID!) {
+  mutation($_id: ID!) {
     deleteProject(_id: $_id)
-}
+  }
 `
 
 export const CREATED_URL_SIGNED = gql`
-  mutation ($contentType: String!, $key: String!) {
-    generateSignedUrl(contentType: $contentType, key:$key)
+  mutation($contentType: String!, $key: String!) {
+    generateSignedUrl(contentType: $contentType, key: $key)
+  }
+`
+
+export const CREATE_RDO = gql`
+  mutation (
+    $id: ID
+    $projeto: String
+    $encarregado: String
+    $local: String
+    $dataDaProducao: String
+    $clima: ClimaInput
+    $maoDeObra: [MaoDeObraInput]
+    $observacoes: String
+    $atividades: [AtividadeInput]
+  ) {
+    createRDO(
+      data: {
+        id: $id
+        projeto: $projeto
+        encarregado: $encarregado
+        local: $local
+        dataDaProducao: $dataDaProducao
+        clima: $clima
+        maoDeObra: $maoDeObra
+        observacoes: $observacoes
+        atividades: $atividades
+      }
+    ) {
+      id
+    }
   }
 `
