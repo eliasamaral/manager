@@ -10,6 +10,7 @@ import {
 	Select,
 	Space,
 	Table,
+	TimePicker,
 	Typography,
 } from 'antd'
 import { useState } from 'react'
@@ -36,9 +37,11 @@ const ACTIVITIES_DATA = [
 
 export default function FormsRDO() {
 	const [form] = Form.useForm()
-	const [activityForm] = Form.useForm()
-	const [isModalOpen, setIsModalOpen] = useState(false)
+	const [activityForm, collaboratorsForm] = Form.useForm()
+	const [isActivityModalOpen, setIsActivityModalOpen] = useState(false)
+	const [isCollaboratorModalOpen, setIsCollaboratorModalOpen] = useState(false)
 	const [activities, setActivities] = useState([])
+	const [collaborators, setCollaborators] = useState([])
 
 	const { data: projectsData, loading: loadingProjects } =
 		useQuery(GET_PROJECTS)
@@ -53,6 +56,7 @@ export default function FormsRDO() {
 			...values,
 			report_date: values.report_date.format('DD/MM/YYYY'),
 			activities,
+			collaborators,
 		}
 
 		console.log('Formatted Values:', formattedValues)
@@ -74,12 +78,22 @@ export default function FormsRDO() {
 
 	const handleActivitySubmit = (values) => {
 		setActivities([...activities, { ...values }])
-		activityForm.resetFields()
-		setIsModalOpen(false)
+		setIsActivityModalOpen(false)
+	}
+	const handleCollaboratorsSubmit = (values) => {
+		console.log(values)
+		setCollaborators([...collaborators, { ...values }])
+		setIsCollaboratorModalOpen(false)
 	}
 
 	const deleteActivity = (key) => {
 		setActivities(activities.filter((activity) => activity.key !== key))
+	}
+
+	const deleteCollaborator = (key) => {
+		setCollaborators(
+			collaborators.filter((collaborator) => collaborator.key !== key),
+		)
 	}
 
 	const activityColumns = [
@@ -98,6 +112,25 @@ export default function FormsRDO() {
 			render: (_, record) => (
 				<Button
 					onClick={() => deleteActivity(record.key)}
+					icon={<DeleteOutlined />}
+					danger
+				/>
+			),
+		},
+	]
+
+	const collaboratorsColumns = [
+		{
+			title: 'Nome',
+			dataIndex: 'name',
+			key: 'name	',
+		},
+		{
+			title: 'Ações',
+			key: 'actions',
+			render: (_, record) => (
+				<Button
+					onClick={() => deleteCollaborator(record.key)}
 					icon={<DeleteOutlined />}
 					danger
 				/>
@@ -181,7 +214,7 @@ export default function FormsRDO() {
 								dropdownStyle={{ width: 'auto' }}
 							>
 								{collaboratorsData?.collaborators.map((e) => (
-									<Option key={e._id} value={e._id}>
+									<Option key={e._id} value={e.name}>
 										{e.name}
 									</Option>
 								))}
@@ -220,42 +253,90 @@ export default function FormsRDO() {
 
 					<Divider orientation="left">Mão de obra</Divider>
 
-					<Space>
-						<Button onClick={''} type="default">
-							Adicionar
-						</Button>
-					</Space>
-
-					<Divider orientation="left">
-						Atividades
-						<Badge
-							count={activities.length ? activities.length : ''}
-							color="#faad14"
+					{collaborators.length > 0 ? (
+						<Table
+							size="small"
+							rowKey={(record) => record.id}
+							dataSource={collaborators}
+							columns={collaboratorsColumns}
 						/>
-					</Divider>
+					) : null}
+
+					<Button
+						type="dashed"
+						onClick={() => setIsCollaboratorModalOpen(true)}
+						icon={<PlusOutlined />}
+					>
+						Adicionar Colaborador
+					</Button>
+
+					<Modal
+						title="Adicionar colaborador"
+						open={isCollaboratorModalOpen}
+						onCancel={() => setIsCollaboratorModalOpen(false)}
+						footer={null}
+					>
+						<Form
+							form={collaboratorsForm}
+							layout="vertical"
+							onFinish={handleCollaboratorsSubmit}
+						>
+							<Form.Item
+								name="name"
+								label="Colaborador"
+								rules={[{ required: true, message: 'Selecione o colaborador' }]}
+							>
+								<Select placeholder="Selecione o colaborador" allowClear>
+									{collaboratorsData?.collaborators.map((collaborator) => (
+										<Option key={collaborator._id} value={collaborator.name}>
+											{collaborator.name}
+										</Option>
+									))}
+								</Select>
+							</Form.Item>
+
+							<Form.Item name="start_time">
+								<TimePicker format="HH:mm" placeholder="Inicio expediente" />
+							</Form.Item>
+							<Form.Item name="end_time">
+								<TimePicker format="HH:mm" placeholder="Fim expediente" />
+							</Form.Item>
+
+							<Form.Item name="description" label="Descrição">
+								<TextArea rows={4} />
+							</Form.Item>
+
+							<Form.Item>
+								<Button type="primary" htmlType="submit">
+									Adicionar
+								</Button>
+							</Form.Item>
+						</Form>
+					</Modal>
+
+					<Divider orientation="left">Atividades</Divider>
 
 					{activities.length > 0 ? (
 						<Table
+							size="small"
 							rowKey={(record) => record.id}
 							dataSource={activities}
 							columns={activityColumns}
 						/>
-					) : (
-						''
-					)}
+					) : null}
 
 					<Button
 						type="dashed"
-						onClick={() => setIsModalOpen(true)}
+						onClick={() => setIsActivityModalOpen(true)}
 						icon={<PlusOutlined />}
 					>
-						Adicionar
+						Adicionar Atividade
 					</Button>
 
 					<Modal
 						title="Adicionar atividade"
-						open={isModalOpen}
-						onCancel={() => setIsModalOpen(false)}
+						open={isActivityModalOpen}
+						onCancel={() => setIsActivityModalOpen(false)}
 						footer={null}
 					>
 						<Form
@@ -283,14 +364,10 @@ export default function FormsRDO() {
 								label="Duração"
 								rules={[{ required: true, message: 'Informe a duração' }]}
 							>
-								<Input type="time" />
+								<TimePicker format="HH:mm" />
 							</Form.Item>
 
-							<Form.Item
-								name="description"
-								label="Descrição"
-								rules={[{ required: true, message: 'Descreva a atividade' }]}
-							>
+							<Form.Item name="description" label="Descrição">
 								<TextArea rows={4} />
 							</Form.Item>
 
