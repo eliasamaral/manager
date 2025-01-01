@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client'
+import cuid from 'cuid'
 import {
 	Badge,
 	Button,
@@ -19,6 +20,7 @@ import {
 	GET_ACTIVITY,
 	GET_COLLABORATORS,
 	GET_PROJECTS,
+	CREATE_REPORT,
 } from '../../schemas'
 import 'dayjs/locale/pt-br'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
@@ -50,39 +52,53 @@ export default function FormsRDO() {
 	const { data: activityData, loading: loadingActivity } =
 		useQuery(GET_ACTIVITY)
 	const [createRDO] = useMutation(CREATE_RDO)
+	const [createReport] = useMutation(CREATE_REPORT)
 
 	const handleSubmit = async (values) => {
 		const formattedValues = {
 			...values,
+			id: cuid(),
 			report_date: values.report_date.format('DD/MM/YYYY'),
 			activities,
 			collaborators,
 		}
 
-		console.log('Formatted Values:', formattedValues)
+		try {
+			console.log(formattedValues)
 
-		// try {
-		//   const response = await createRDO({
-		//     variables: {
-		//       ...values,
-		//       activities,
-		//     },
-		//   });
-		//   console.log('RDO created:', response);
-		//   form.resetFields();
-		//   setActivities([]);
-		// } catch (error) {
-		//   console.error('Error creating RDO:', error);
-		// }
+			const response = await createReport({
+				variables: formattedValues,
+			})
+			console.log('RDO created:', response)
+			//   form.resetFields();
+			//   setActivities([]);
+		} catch (error) {
+			console.error('Error creating RDO:', error)
+		}
 	}
 
 	const handleActivitySubmit = (values) => {
-		setActivities([...activities, { ...values }])
+		const duration = `${values.duration.hour().toString().padStart(2, '0')}:${values.duration.minute().toString().padStart(2, '0')}`
+
+		const formattedValues = {
+			...values,
+			duration,
+		}
+
+		setActivities([...activities, { ...formattedValues }])
 		setIsActivityModalOpen(false)
 	}
 	const handleCollaboratorsSubmit = (values) => {
-		console.log(values)
-		setCollaborators([...collaborators, { ...values }])
+		const start_time = `${values.start_time.hour().toString().padStart(2, '0')}:${values.start_time.minute().toString().padStart(2, '0')}`
+		const end_time = `${values.end_time.hour().toString().padStart(2, '0')}:${values.end_time.minute().toString().padStart(2, '0')}`
+
+		const formattedValues = {
+			...values,
+			start_time,
+			end_time,
+		}
+
+		setCollaborators([...collaborators, { ...formattedValues }])
 		setIsCollaboratorModalOpen(false)
 	}
 
@@ -360,7 +376,7 @@ export default function FormsRDO() {
 							</Form.Item>
 
 							<Form.Item
-								name="duracao"
+								name="duration"
 								label="Duração"
 								rules={[{ required: true, message: 'Informe a duração' }]}
 							>
