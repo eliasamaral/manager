@@ -11,7 +11,7 @@ export function exportPDF(params) {
 	doc.text('Energia que movimenta!', 160, 37)
 
 	autoTable(doc, {
-		head: [[`ID: ${params._id}`]],
+		head: [[`ID: ${params.id}`]],
 		headStyles: {
 			fontSize: 8,
 		},
@@ -27,10 +27,8 @@ export function exportPDF(params) {
 	})
 
 	autoTable(doc, {
-		head: [['Projeto', 'Líder', 'Local', 'Data']],
-		body: [
-			[params.projeto, params.encarregado, params.local, params.dataDaProducao],
-		],
+		head: [['Projeto', 'Líder', 'Data']],
+		body: [[params.project, params.leader, params.report_date]],
 	})
 
 	autoTable(doc, {
@@ -43,7 +41,9 @@ export function exportPDF(params) {
 
 	autoTable(doc, {
 		head: [['Manhã', 'Tarde']],
-		body: [[params.clima.manha, params.clima.tarde]],
+		body: [
+			[params.morning_weather_condition, params.afternoon_weather_condition],
+		],
 
 		tableWidth: 'wrap',
 	})
@@ -57,13 +57,13 @@ export function exportPDF(params) {
 	})
 
 	autoTable(doc, {
-		head: [['Atividade', 'Duração', 'Executante']],
+		head: [['Atividade', 'Duração', 'Descrição']],
 		columns: [
-			{ header: 'Atividade', dataKey: 'atividade' },
-			{ header: 'Duração', dataKey: 'duracao' },
-			{ header: 'Executante', dataKey: 'executante' },
+			{ header: 'Atividade', dataKey: 'id' },
+			{ header: 'Duração', dataKey: 'duration' },
+			{ header: 'Descrição', dataKey: 'description' },
 		],
-		body: params.atividades,
+		body: params.activities,
 	})
 
 	autoTable(doc, {
@@ -75,19 +75,19 @@ export function exportPDF(params) {
 	})
 
 	autoTable(doc, {
-		head: [['Nome', 'Função', 'Início', 'Fim']],
+		head: [['Nome', 'Início', 'Fim', 'Descrição']],
 		columns: [
-			{ header: 'Nome', dataKey: 'nome' },
-			{ header: 'Função', dataKey: 'funcao' },
-			{ header: 'Início', dataKey: 'inicio' },
-			{ header: 'Fim', dataKey: 'fim' },
+			{ header: 'Nome', dataKey: 'name' },
+			{ header: 'Início', dataKey: 'start_time' },
+			{ header: 'Fim', dataKey: 'end_time' },
+			{ header: 'Descrição', dataKey: 'description' },
 		],
-		body: params.maoDeObra,
+		body: params.members,
 	})
 
 	autoTable(doc, {
 		head: [['Observação']],
-		body: [[params.observacoes]],
+		body: [[params.observations]],
 		theme: 'plain',
 	})
 
@@ -97,5 +97,5 @@ export function exportPDF(params) {
 		margin: { top: 40 },
 	})
 
-	doc.save('a4.pdf')
+	doc.save(`${params.id}.pdf`)
 }

@@ -1,24 +1,141 @@
-import { useEffect } from 'react'
-import { useQuery } from '@apollo/client'
-import { GET_PROJECTS, GET_COLLABORATORS, GET_ACTIVITY } from '../../schemas'
-
-import { Button, DatePicker, Divider, Form, Input, Space, Typography, Select } from 'antd'
+import { useMutation, useQuery } from '@apollo/client'
+import cuid from 'cuid'
+import {
+	Badge,
+	Button,
+	DatePicker,
+	Divider,
+	Form,
+	Input,
+	Modal,
+	Select,
+	Space,
+	Table,
+	TimePicker,
+	Typography,
+} from 'antd'
+import { useState } from 'react'
+import {
+	GET_ACTIVITY,
+	GET_COLLABORATORS,
+	GET_PROJECTS,
+	CREATE_REPORT,
+} from '../../schemas'
+import 'dayjs/locale/pt-br'
+import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 
 const { TextArea } = Input
 const { Title } = Typography
 const { Option } = Select
 
-const onFinish = (values) => {
-	console.log('Success:', values)
-}
-const onFinishFailed = (errorInfo) => {
-	console.log('Failed:', errorInfo)
-}
-
 export default function FormsRDO() {
-	const { data: projetosData, loading: carregandoProjetos, error: erroProjetos } = useQuery(GET_PROJECTS)
-	const { data: collaboratorsData, loading: carregandocollaborators, error: errocollaborators } = useQuery(GET_COLLABORATORS)
-	const { data: activityData, loading: carregandoActivity, error: erroActivity } = useQuery(GET_ACTIVITY)
+	const [form] = Form.useForm()
+	const [activityForm, membersForm] = Form.useForm()
+	const [isActivityModalOpen, setIsActivityModalOpen] = useState(false)
+	const [isCollaboratorModalOpen, setIsCollaboratorModalOpen] = useState(false)
+	const [activities, setActivities] = useState([])
+	const [members, setMembers] = useState([])
+
+	const { data: projectsData, loading: loadingProjects } =
+		useQuery(GET_PROJECTS)
+	const { data: membersData, loading: loadingMembers } =
+		useQuery(GET_COLLABORATORS)
+	const { data: activityData, loading: loadingActivity } =
+		useQuery(GET_ACTIVITY)
+	const [createReport] = useMutation(CREATE_REPORT)
+
+	
+
+	const handleSubmit = async (values) => {
+		const formattedValues = {
+			...values,
+			id: cuid(),
+			report_date: values.report_date.format('DD/MM/YYYY'),
+			activities,
+			members,
+		}
+
+		try {
+			const response = await createReport({
+				variables: formattedValues,
+			})
+			form.resetFields()
+			setActivities([])
+		} catch (error) {
+			console.error('Error creating RDO:', error)
+		}
+	}
+
+	const handleActivitySubmit = (values) => {
+		const duration = `${values.duration.hour().toString().padStart(2, '0')}:${values.duration.minute().toString().padStart(2, '0')}`
+
+		const formattedValues = {
+			...values,
+			duration,
+		}
+
+		setActivities([...activities, { ...formattedValues }])
+		setIsActivityModalOpen(false)
+	}
+	const handleMembersSubmit = (values) => {
+		const start_time = `${values.start_time.hour().toString().padStart(2, '0')}:${values.start_time.minute().toString().padStart(2, '0')}`
+		const end_time = `${values.end_time.hour().toString().padStart(2, '0')}:${values.end_time.minute().toString().padStart(2, '0')}`
+
+		const formattedValues = {
+			...values,
+			start_time,
+			end_time,
+		}
+
+		setMembers([...members, { ...formattedValues }])
+		setIsCollaboratorModalOpen(false)
+	}
+
+	const deleteActivity = (key) => {
+		setActivities(activities.filter((activity) => activity.id !== key))
+	}
+
+	const deleteCollaborator = (key) => {		
+		setMembers(members.filter((member) => member.name !== key));
+	}
+
+	const activityColumns = [
+		{
+			title: 'Atividade',
+			dataIndex: 'id',
+			key: 'id',
+		},
+		{
+			title: 'Ações',
+			key: 'actions',
+			render: (_, record) => (
+				<Button
+					onClick={() => deleteActivity(record.id)}
+					icon={<DeleteOutlined />}
+					danger
+				/>
+			),
+		},
+	]
+
+	const membersColumns = [
+		{
+			title: 'Nome',
+			dataIndex: 'name',
+			key: 'name	',
+		},
+		{
+			title: 'Ações',
+			key: 'actions',
+			render: (_, record) => (
+				<Button
+					onClick={() => deleteCollaborator(record.name)}
+					icon={<DeleteOutlined />}
+					danger
+				/>
+			),
+		},
+	]
 
 	return (
 		<div
@@ -29,22 +146,12 @@ export default function FormsRDO() {
 				width: '100%',
 			}}
 		>
-			<div
-				style={{
-					height: '100vh',
-					width: '100%',
-					padding: '20px',
-				}}
-			>
+			<div style={{ height: '100vh', width: '100%', padding: '20px' }}>
 				<Form
-					name="basic"
-					labelCol={{ span: 8 }}
-					wrapperCol={{ span: 16 }}
-					style={{ maxWidth: 600, margin: '20px 10px' }}
-					initialValues={{ remember: true }}
-					autoComplete="off"
-					onFinish={onFinish}
-					onFinishFailed={onFinishFailed}
+					form={form}
+					name="rdo-form"
+					layout="vertical"
+					onFinish={handleSubmit}
 				>
 					<Space
 						style={{
@@ -53,10 +160,9 @@ export default function FormsRDO() {
 							justifyContent: 'space-between',
 						}}
 					>
-						<Title level={4} style={{ margin: '0px' }}>
+						<Title level={4} style={{ margin: 0 }}>
 							Relatório de obras
 						</Title>
-
 						<Button type="primary" htmlType="submit">
 							Enviar
 						</Button>
@@ -72,52 +178,25 @@ export default function FormsRDO() {
 							marginBlock: '10px',
 						}}
 					>
-						<Title type="secondary" level={5} style={{ margin: '0px' }}>
+						<Title type="secondary" level={5} style={{ margin: 0 }}>
 							Projeto
 						</Title>
 						<Form.Item
-							name="projeto"
-							rules={[
-								{
-									required: true,
-									message: 'Obrigatorio!',
-								},
-							]}
+							name="project"
+							rules={[{ required: true, message: 'Obrigatorio' }]}
 							noStyle
-							style={{ margin: '0px' }}
 						>
-							<Select placeholder="Projeto" onChange={(e) => console.log(e)} allowClear dropdownStyle={{ width: 'auto' }}>
-								{projetosData?.projects.map((e) => (
-									<Option key={e._id} value={e._id}>
-										{e.project}
+							<Select
+								placeholder="Projeto"
+								allowClear
+								dropdownStyle={{ width: 'auto' }}
+							>
+								{projectsData?.projects.map((e) => (
+									<Option key={e._id} value={`${e.location} - ${e.project}`}>
+										{e.location} - {e.project}
 									</Option>
 								))}
 							</Select>
-						</Form.Item>
-					</Space>
-
-					<Space
-						style={{
-							display: 'flex',
-							alignItems: 'center',
-							justifyContent: 'space-between',
-							marginBlock: '10px',
-						}}
-					>
-						<Title type="secondary" level={5} style={{ margin: '0px' }}>
-							Local
-						</Title>
-						<Form.Item
-							name="local"
-							rules={[
-								{
-									required: true,
-									message: 'Obrigatorio!',
-								},
-							]}
-							noStyle
-						>
-							<Input name="local" onChange={(e) => handleInputChange(e)} />
 						</Form.Item>
 					</Space>
 
@@ -125,22 +204,16 @@ export default function FormsRDO() {
 
 					<Space>
 						<Form.Item
-							name="encarregado"
-							rules={[
-								{
-									required: true,
-									message: 'Obrigatorio!',
-								},
-							]}
+							name="leader"
+							rules={[{ required: true, message: 'Obrigatorio' }]}
 						>
 							<Select
-								placeholder="Líder de equipe"
-								onChange={(e) => console.log(e)}
+								placeholder="Líder"
 								allowClear
 								dropdownStyle={{ width: 'auto' }}
 							>
-								{collaboratorsData?.collaborators.map((e) => (
-									<Option key={e._id} value={e._id}>
+								{membersData?.collaborators.map((e) => (
+									<Option key={e._id} value={e.name}>
 										{e.name}
 									</Option>
 								))}
@@ -148,15 +221,14 @@ export default function FormsRDO() {
 						</Form.Item>
 
 						<Form.Item
-							name="data"
-							rules={[
-								{
-									required: true,
-									message: 'Obrigatorio!',
-								},
-							]}
+							name="report_date"
+							rules={[{ required: true, message: 'Obrigatório' }]}
 						>
-							<DatePicker format={'DD/MM/YYYY'} placeholder="Data" inputReadOnly={true} />
+							<DatePicker
+								format="DD/MM/YYYY"
+								placeholder="Data"
+								inputReadOnly
+							/>
 						</Form.Item>
 					</Space>
 
@@ -164,40 +236,155 @@ export default function FormsRDO() {
 
 					<Space>
 						<Form.Item
-							rules={[
-								{
-									required: true,
-									message: 'Precisamos de um diagrama ou ordem.',
-								},
-							]}
+							name="morning_weather_condition"
+							rules={[{ required: true, message: 'Obrigatorio' }]}
 						>
-							<Input addonBefore="Manhã" placeholder="Clima" name="climaManha" onChange={(e) => handleInputChange(e)} />
+							<Input addonBefore="Manhã" placeholder="Clima" />
 						</Form.Item>
 
-						<Form.Item>
-							<Input addonBefore="Tarde" placeholder="Clima" name="climaTarde" onChange={(e) => handleInputChange(e)} />
+						<Form.Item
+							name="afternoon_weather_condition"
+							rules={[{ required: true, message: 'Obrigatorio' }]}
+						>
+							<Input addonBefore="Tarde" placeholder="Clima" />
 						</Form.Item>
 					</Space>
 
 					<Divider orientation="left">Mão de obra</Divider>
 
-					<Space>
-						<Button onClick={''} type="default">
-							Adicionar
-						</Button>
-					</Space>
+					{members.length > 0 ? (
+						<Table
+							size="small"
+							rowKey={(record) => record.id}
+							dataSource={members}
+							columns={membersColumns}
+						/>
+					) : null}
+
+					<Button
+						type="dashed"
+						onClick={() => setIsCollaboratorModalOpen(true)}
+						icon={<PlusOutlined />}
+					>
+						Adicionar Colaborador
+					</Button>
+
+					<Modal
+						title="Adicionar colaborador"
+						open={isCollaboratorModalOpen}
+						onCancel={() => setIsCollaboratorModalOpen(false)}
+						footer={null}
+					>
+						<Form
+							form={membersForm}
+							layout="vertical"
+							onFinish={handleMembersSubmit}
+						>
+							<Form.Item
+								name="name"
+								label="Colaborador"
+								rules={[{ required: true, message: 'Selecione o colaborador' }]}
+							>
+								<Select placeholder="Selecione o colaborador" allowClear>
+									{membersData?.collaborators.map((member) => (
+										<Option key={member._id} value={member.name}>
+											{member.name}
+										</Option>
+									))}
+								</Select>
+							</Form.Item>
+
+							<Form.Item name="start_time">
+								<TimePicker format="HH:mm" placeholder="Inicio expediente" />
+							</Form.Item>
+							<Form.Item name="end_time">
+								<TimePicker format="HH:mm" placeholder="Fim expediente" />
+							</Form.Item>
+
+							<Form.Item name="description" label="Descrição">
+								<TextArea rows={4} />
+							</Form.Item>
+
+							<Form.Item>
+								<Button type="primary" htmlType="submit">
+									Adicionar
+								</Button>
+							</Form.Item>
+						</Form>
+					</Modal>
 
 					<Divider orientation="left">Atividades</Divider>
 
-					<Space>
-						<Button onClick={''} type="default">
-							Adicionar
-						</Button>
-					</Space>
+					{activities.length > 0 ? (
+						<Table
+							size="small"
+							rowKey={(record) => record.id}
+							dataSource={activities}
+							columns={activityColumns}
+						/>
+					) : null}
 
-					<Divider orientation="left">Relatos de desvios e/ou retrabalhos</Divider>
+					<Button
+						type="dashed"
+						onClick={() => setIsActivityModalOpen(true)}
+						icon={<PlusOutlined />}
+					>
+						Adicionar Atividade
+					</Button>
 
-					<TextArea placeholder="..." rows={4} name="observacoes" onChange={(e) => handleInputChange(e)} />
+					<Modal
+						title="Adicionar atividade"
+						open={isActivityModalOpen}
+						onCancel={() => setIsActivityModalOpen(false)}
+						footer={null}
+					>
+						<Form
+							form={activityForm}
+							layout="vertical"
+							onFinish={handleActivitySubmit}
+						>
+							<Form.Item
+								name="id"
+								label="Atividade"
+								rules={[{ required: true, message: 'Selecione a atividade' }]}
+							>
+								<Select placeholder="Selecione a atividade" allowClear>
+									<Option value="not_listed">Não listada</Option>
+									{activityData?.activities.map((activity) => (
+										<Option key={activity._id} value={activity.name}>
+											{activity.description}
+										</Option>
+									))}
+								</Select>
+							</Form.Item>
+
+							<Form.Item
+								name="duration"
+								label="Duração"
+								rules={[{ required: true, message: 'Informe a duração' }]}
+							>
+								<TimePicker format="HH:mm" />
+							</Form.Item>
+
+							<Form.Item name="description" label="Descrição">
+								<TextArea rows={4} />
+							</Form.Item>
+
+							<Form.Item>
+								<Button type="primary" htmlType="submit">
+									Adicionar
+								</Button>
+							</Form.Item>
+						</Form>
+					</Modal>
+
+					<Divider orientation="left">
+						Relatos de desvios e/ou retrabalhos
+					</Divider>
+
+					<Form.Item name="observations">
+						<TextArea placeholder="..." rows={4} />
+					</Form.Item>
 
 					<Space style={{ marginBlock: '10px' }}>
 						<Button type="primary" htmlType="submit">
@@ -206,13 +393,6 @@ export default function FormsRDO() {
 					</Space>
 				</Form>
 			</div>
-			<div
-				style={{
-					height: '100vh',
-					width: '100%',
-					background: 'linear-gradient(98deg, rgba(115,118,208,1) 0%, rgba(59,59,233,1) 35%, rgba(36,189,221,1) 100%)',
-				}}
-			/>
 		</div>
 	)
 }

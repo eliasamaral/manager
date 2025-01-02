@@ -1,26 +1,34 @@
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
-import { Button, Drawer, Table, Form, Input, notification } from 'antd'
+import { useMutation, useQuery } from '@apollo/client'
+import { Button, Drawer, Form, Input, Table, notification } from 'antd'
 import React, { useState } from 'react'
-import { useQuery, useMutation } from '@apollo/client'
 import {
-	GET_ACTIVITY,
 	CREATED_ACTIVITY,
-	DELETE_ACTIVITY,
-	GET_COLLABORATORS,
-	DELETE_COLLABORATOR,
 	CREATED_COLLABORATOR,
+	DELETE_ACTIVITY,
+	DELETE_COLLABORATOR,
+	GET_ACTIVITY,
+	GET_COLLABORATORS,
 } from '../../schemas'
 
 const FormAtividade = ({ visivel, aoFechar, aoEnviar }) => (
 	<Drawer title="Adicionar nova atividade" onClose={aoFechar} open={visivel}>
 		<Form onFinish={aoEnviar} autoComplete="off">
-			<Form.Item label="Nome" name="name" rules={[{ required: true, message: 'Obrigatório' }]}>
+			<Form.Item
+				label="Nome"
+				name="name"
+				rules={[{ required: true, message: 'Obrigatório' }]}
+			>
 				<Input />
 			</Form.Item>
 			<Form.Item label="Descrição" name="description">
 				<Input />
 			</Form.Item>
-			<Form.Item label="Valor" name="price" rules={[{ required: true, message: 'Obrigatório' }]}>
+			<Form.Item
+				label="Valor"
+				name="price"
+				rules={[{ required: true, message: 'Obrigatório' }]}
+			>
 				<Input type="number" />
 			</Form.Item>
 			<Form.Item>
@@ -35,10 +43,18 @@ const FormAtividade = ({ visivel, aoFechar, aoEnviar }) => (
 const FormColaborador = ({ visivel, aoFechar, aoEnviar }) => (
 	<Drawer title="Adicionar novo colaborador" onClose={aoFechar} open={visivel}>
 		<Form onFinish={aoEnviar} autoComplete="off">
-			<Form.Item label="Nome" name="name" rules={[{ required: true, message: 'Obrigatório' }]}>
+			<Form.Item
+				label="Nome"
+				name="name"
+				rules={[{ required: true, message: 'Obrigatório' }]}
+			>
 				<Input />
 			</Form.Item>
-			<Form.Item label="HH" name="hh" rules={[{ required: true, message: 'Obrigatório' }]}>
+			<Form.Item
+				label="HH"
+				name="hh"
+				rules={[{ required: true, message: 'Obrigatório' }]}
+			>
 				<Input type="number" />
 			</Form.Item>
 			<Form.Item>
@@ -54,8 +70,16 @@ export default function Configuracoes() {
 	const [open, setOpen] = useState(false)
 	const [openModalColaborador, setOpenModalColaborador] = useState(false)
 
-	const { data: atividadesData, loading: carregandoAtividades, error: erroAtividades } = useQuery(GET_ACTIVITY)
-	const { data: colaboradoresData, loading: carregandoColaboradores, error: erroColaboradores } = useQuery(GET_COLLABORATORS)
+	const {
+		data: atividadesData,
+		loading: carregandoAtividades,
+		error: erroAtividades,
+	} = useQuery(GET_ACTIVITY)
+	const {
+		data: colaboradoresData,
+		loading: carregandoColaboradores,
+		error: erroColaboradores,
+	} = useQuery(GET_COLLABORATORS)
 
 	const [criarAtividade] = useMutation(CREATED_ACTIVITY, {
 		refetchQueries: [GET_ACTIVITY],
@@ -64,24 +88,31 @@ export default function Configuracoes() {
 
 	const [criarColaborador] = useMutation(CREATED_COLLABORATOR, {
 		refetchQueries: [GET_COLLABORATORS],
-		onError: () => notification.error({ message: 'Erro ao criar colaborador.' }),
+		onError: () =>
+			notification.error({ message: 'Erro ao criar colaborador.' }),
 	})
 
 	const [deletarAtividade] = useMutation(DELETE_ACTIVITY, {
 		refetchQueries: [GET_ACTIVITY],
-		onError: () => notification.error({ message: 'Erro ao deletar atividade.' }),
+		onError: () =>
+			notification.error({ message: 'Erro ao deletar atividade.' }),
 	})
 
 	const [deletarColaborador] = useMutation(DELETE_COLLABORATOR, {
 		refetchQueries: [GET_COLLABORATORS],
-		onError: () => notification.error({ message: 'Erro ao deletar colaborador.' }),
+		onError: () =>
+			notification.error({ message: 'Erro ao deletar colaborador.' }),
 	})
 
-	const handleDeletarAtividade = (_id) => deletarAtividade({ variables: { _id } })
-	const handleDeletarColaborador = (_id) => deletarColaborador({ variables: { _id } })
+	const handleDeletarAtividade = (_id) =>
+		deletarAtividade({ variables: { _id } })
+	const handleDeletarColaborador = (_id) =>
+		deletarColaborador({ variables: { _id } })
 
-	if (carregandoAtividades || carregandoColaboradores) return <div>Carregando...</div>
-	if (erroAtividades || erroColaboradores) return <div>Houve um erro ao buscar as informações</div>
+	if (carregandoAtividades || carregandoColaboradores)
+		return <div>Carregando...</div>
+	if (erroAtividades || erroColaboradores)
+		return <div>Houve um erro ao buscar as informações</div>
 
 	const aoFechar = () => {
 		setOpen(false)
@@ -117,7 +148,11 @@ export default function Configuracoes() {
 				}}
 			>
 				<div style={{ fontSize: '20px' }}>Atividades</div>
-				<Button icon={<PlusOutlined />} type="primary" onClick={() => setOpen(true)}>
+				<Button
+					icon={<PlusOutlined />}
+					type="primary"
+					onClick={() => setOpen(true)}
+				>
 					Nova atividade
 				</Button>
 			</div>
@@ -136,7 +171,12 @@ export default function Configuracoes() {
 					},
 					{
 						title: 'Ações',
-						render: ({ _id }) => <Button onClick={() => handleDeletarAtividade(_id)} icon={<DeleteOutlined />} />,
+						render: ({ _id }) => (
+							<Button
+								onClick={() => handleDeletarAtividade(_id)}
+								icon={<DeleteOutlined />}
+							/>
+						),
 					},
 				]}
 			/>
@@ -149,7 +189,11 @@ export default function Configuracoes() {
 				}}
 			>
 				<div style={{ fontSize: '20px' }}>Colaboradores</div>
-				<Button icon={<PlusOutlined />} type="primary" onClick={() => setOpenModalColaborador(true)}>
+				<Button
+					icon={<PlusOutlined />}
+					type="primary"
+					onClick={() => setOpenModalColaborador(true)}
+				>
 					Novo colaborador
 				</Button>
 			</div>
@@ -167,12 +211,25 @@ export default function Configuracoes() {
 					},
 					{
 						title: 'Ações',
-						render: ({ _id }) => <Button onClick={() => handleDeletarColaborador(_id)} icon={<DeleteOutlined />} />,
+						render: ({ _id }) => (
+							<Button
+								onClick={() => handleDeletarColaborador(_id)}
+								icon={<DeleteOutlined />}
+							/>
+						),
 					},
 				]}
 			/>
-			<FormAtividade visivel={open} aoFechar={aoFechar} aoEnviar={aoEnviarAtividade} />
-			<FormColaborador visivel={openModalColaborador} aoFechar={aoFechar} aoEnviar={aoEnviarColaborador} />
+			<FormAtividade
+				visivel={open}
+				aoFechar={aoFechar}
+				aoEnviar={aoEnviarAtividade}
+			/>
+			<FormColaborador
+				visivel={openModalColaborador}
+				aoFechar={aoFechar}
+				aoEnviar={aoEnviarColaborador}
+			/>
 		</>
 	)
 }

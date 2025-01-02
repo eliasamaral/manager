@@ -1,11 +1,17 @@
+import { useMutation, useQuery } from '@apollo/client'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useMutation, useQuery } from '@apollo/client'
 
-import { Button, Modal, Table } from 'antd'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
+import { Button, Modal, Table } from 'antd'
 
-import { GET_ACTIVITY, GET_PROJECTS, CREATED_PROJECT, DELETE_PROJECT, DELETE_COLLABORATOR } from '../../schemas'
+import {
+	CREATED_PROJECT,
+	DELETE_COLLABORATOR,
+	DELETE_PROJECT,
+	GET_ACTIVITY,
+	GET_PROJECTS,
+} from '../../schemas'
 
 const styles = {
 	input: {
@@ -40,7 +46,6 @@ const styles = {
 		backgroundColor: '#1677ff',
 		cursor: 'pointer',
 	},
-
 }
 const columns = [
 	{
@@ -58,21 +63,33 @@ const columns = [
 	},
 ]
 export default function Projects() {
-	const { data: atividadesData, loading: carregandoAtividades, error: erroAtividades } = useQuery(GET_ACTIVITY)
-	const { data: projetosData, loading: carregandoProjetos, error: erroProjetos } = useQuery(GET_PROJECTS)
+	const {
+		data: atividadesData,
+		loading: carregandoAtividades,
+		error: erroAtividades,
+	} = useQuery(GET_ACTIVITY)
+	const {
+		data: projetosData,
+		loading: carregandoProjetos,
+		error: erroProjetos,
+	} = useQuery(GET_PROJECTS)
 
-	const [createProject, { data: projectCreatedSuccess, loading: projectCreatedLoading, error }] = useMutation(CREATED_PROJECT, {
+	const [
+		createProject,
+		{ data: projectCreatedSuccess, loading: projectCreatedLoading, error },
+	] = useMutation(CREATED_PROJECT, {
 		refetchQueries: [GET_PROJECTS],
-		onError: (error) => notification.error({ message: 'Erro ao criar projeto.', error }),
+		onError: (error) =>
+			notification.error({ message: 'Erro ao criar projeto.', error }),
 	})
 
 	const [deleteProject] = useMutation(DELETE_PROJECT, {
 		refetchQueries: [GET_PROJECTS],
-		onError: () => notification.error({ message: 'Erro ao deletar o projeto.' }),
+		onError: () =>
+			notification.error({ message: 'Erro ao deletar o projeto.' }),
 	})
 
 	const handleDeletarAtividade = (_id) => deleteProject({ variables: { _id } })
-
 
 	const {
 		register,
@@ -116,8 +133,7 @@ export default function Projects() {
 			activities: selectedActivities,
 		}
 
-		console.log("Sucesso", projectCreatedSuccess);
-		
+		console.log('Sucesso', projectCreatedSuccess)
 
 		createProject({ variables: newData })
 		if (projectCreatedSuccess) {
@@ -125,7 +141,8 @@ export default function Projects() {
 		}
 	}
 
-	if (carregandoAtividades || carregandoProjetos) return <div>Carregando...</div>
+	if (carregandoAtividades || carregandoProjetos)
+		return <div>Carregando...</div>
 
 	return (
 		<>
@@ -176,24 +193,48 @@ export default function Projects() {
 								justifyContent: 'end',
 							}}
 						>
-							<Button onClick={()=> handleDeletarAtividade(e._id)} icon={<DeleteOutlined />} type="primary" />
+							<Button
+								onClick={() => handleDeletarAtividade(e._id)}
+								icon={<DeleteOutlined />}
+								type="primary"
+							/>
 						</div>
 					</div>
 				))}
 			</div>
 
-			<Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null} style={{ display: 'flex' }}>
-				<div style={{ display: 'flex', flexDirection: 'column', padding: '10px' }}>
-					<div style={{ fontSize: '18px', marginBlock: '20px' }}>Criar novo projeto</div>
+			<Modal
+				open={isModalOpen}
+				onOk={handleOk}
+				onCancel={handleCancel}
+				footer={null}
+				style={{ display: 'flex' }}
+			>
+				<div
+					style={{ display: 'flex', flexDirection: 'column', padding: '10px' }}
+				>
+					<div style={{ fontSize: '18px', marginBlock: '20px' }}>
+						Criar novo projeto
+					</div>
 
 					<form onSubmit={handleSubmit(onSubmit)}>
-						<input {...register('project', { required: true })} placeholder="Projeto" style={styles.input} />
+						<input
+							{...register('project', { required: true })}
+							placeholder="Projeto"
+							style={styles.input}
+						/>
 
-						<input {...register('location', { required: true })} placeholder="Local" style={styles.input} />
+						<input
+							{...register('location', { required: true })}
+							placeholder="Local"
+							style={styles.input}
+						/>
 						{errors.exampleRequired && <span>Obrigatorio</span>}
 
 						<div style={{ width: '600px' }}>
-							<div style={{ fontSize: '17px', marginBlock: '20px' }}>Selecione os serviços a serem executados.</div>
+							<div style={{ fontSize: '17px', marginBlock: '20px' }}>
+								Selecione os serviços a serem executados.
+							</div>
 							<Table
 								size="small"
 								rowKey={(record) => record._id}
@@ -213,7 +254,11 @@ export default function Projects() {
 								}}
 							/>
 						</div>
-						<button type="submit" style={styles.button} disabled={projectCreatedLoading}>
+						<button
+							type="submit"
+							style={styles.button}
+							disabled={projectCreatedLoading}
+						>
 							{projectCreatedLoading ? 'Enviando...' : 'Salvar projeto'}
 						</button>
 					</form>

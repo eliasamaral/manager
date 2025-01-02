@@ -1,11 +1,11 @@
+import { UserOutlined } from '@ant-design/icons'
+import { useMutation } from '@apollo/react-hooks'
+import { Button, Form, Input, Typography } from 'antd'
 import React, { useState, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { LOGIN_USER_EMAIL } from '../../schemas'
 import { AuthContext } from '../../utility/context/authContext'
 import { useForm } from '../../utility/hooks'
-import { Button, Typography, Form, Input } from 'antd'
-import { useMutation } from '@apollo/react-hooks'
-import { LOGIN_USER_EMAIL } from '../../schemas'
-import { useNavigate } from 'react-router-dom'
-import { UserOutlined } from '@ant-design/icons'
 
 const { Title } = Typography
 
