@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client'
 import cuid from 'cuid'
 import {
-	Badge,
+	notification,
 	Button,
 	DatePicker,
 	Divider,
@@ -28,6 +28,25 @@ const { TextArea } = Input
 const { Title } = Typography
 const { Option } = Select
 
+const openSuccessNotification = () => {
+	notification.success({
+		message: 'Relatório Enviado',
+		description: 'O relatório foi enviado com sucesso.',
+		placement: 'topRight',
+		duration: 3,
+	})
+}
+
+const openErrorNotification = () => {
+	notification.error({
+		message: 'Tivemos um problema',
+		description: 'O relatório não foi enviado. Tente novamente mais tarde.',
+		placement: 'topRight',
+		duration: 7,
+	})
+}
+
+
 export default function FormsRDO() {
 	const [form] = Form.useForm()
 	const [activityForm, membersForm] = Form.useForm()
@@ -44,8 +63,6 @@ export default function FormsRDO() {
 		useQuery(GET_ACTIVITY)
 	const [createReport] = useMutation(CREATE_REPORT)
 
-	
-
 	const handleSubmit = async (values) => {
 		const formattedValues = {
 			...values,
@@ -61,8 +78,11 @@ export default function FormsRDO() {
 			})
 			form.resetFields()
 			setActivities([])
+			setMembers([])
+			openSuccessNotification()
 		} catch (error) {
 			console.error('Error creating RDO:', error)
+			openErrorNotification()
 		}
 	}
 
@@ -95,8 +115,8 @@ export default function FormsRDO() {
 		setActivities(activities.filter((activity) => activity.id !== key))
 	}
 
-	const deleteCollaborator = (key) => {		
-		setMembers(members.filter((member) => member.name !== key));
+	const deleteCollaborator = (key) => {
+		setMembers(members.filter((member) => member.name !== key))
 	}
 
 	const activityColumns = [
