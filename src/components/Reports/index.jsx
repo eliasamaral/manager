@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client'
 import { Button, Descriptions, Divider, Space, Spin, Table } from 'antd'
 import Alert from 'antd/es/alert/Alert'
 import React from 'react'
-import { GET_RDO } from '../../schemas'
+import { GET_REPORT } from '../../schemas'
 
 import { exportPDF } from '../../utility/exportPDF'
 
@@ -17,51 +17,52 @@ const contentStyle = {
 const columnsAtividades = [
 	{
 		title: 'Atividade',
-		dataIndex: 'atividade',
-		key: 'atividade',
+		dataIndex: 'id',
+		key: 'id',
 	},
 	{
 		title: 'Duração',
-		dataIndex: 'duracao',
-		key: 'duracao',
+		dataIndex: 'duration',
+		key: 'duration',
 	},
 	{
-		title: 'Executante',
-		dataIndex: 'executante',
-		key: 'executante',
+		title: 'Descrição',
+		dataIndex: 'description',
+		key: 'description',
 	},
 ]
 const columnsMaoDeObra = [
 	{
 		title: 'Nome',
-		dataIndex: 'nome',
-		key: 'nome',
+		dataIndex: 'name',
+		key: 'name',
 		width: '100px',
 	},
 	{
-		title: 'Função',
-		dataIndex: 'funcao',
-		key: 'funcao',
-	},
-	{
 		title: 'Início',
-		dataIndex: 'inicio',
-		key: 'inicio',
+		dataIndex: 'start_time',
+		key: 'start_time',
 		width: '100px',
 	},
 	{
 		title: 'Fim',
-		dataIndex: 'fim',
-		key: 'fim',
+		dataIndex: 'end_time',
+		key: 'end_time',
+		width: '100px',
+	},
+	{
+		title: 'Observação',
+		dataIndex: 'description',
+		key: 'description',
 		width: '100px',
 	},
 ]
 
-export default function RDODigital({ RDOfiltrado }) {
-	const { _id } = RDOfiltrado
+export default function Reports({ Reportsfiltrado }) {
+	const { id } = Reportsfiltrado
 
-	const { loading, data } = useQuery(GET_RDO, {
-		variables: { _id },
+	const { loading, data } = useQuery(GET_REPORT, {
+		variables: { id },
 	})
 
 	if (loading) {
@@ -81,7 +82,7 @@ export default function RDODigital({ RDOfiltrado }) {
 		)
 	}
 
-	const { getRDO } = data
+	const { getReport } = data
 
 	return (
 		<div
@@ -98,35 +99,34 @@ export default function RDODigital({ RDOfiltrado }) {
 			<Descriptions
 				title="RDO Digital"
 				extra={
-					<Button type="primary" onClick={() => exportPDF(getRDO)}>
+					<Button type="primary" onClick={() => exportPDF(getReport)}>
 						PDF
 					</Button>
 				}
 			>
-				<Descriptions.Item label="Projeto">{getRDO.projeto}</Descriptions.Item>
-				<Descriptions.Item label="Líder">
-					{getRDO.encarregado}
+				<Descriptions.Item label="Projeto">
+					{getReport.project}
 				</Descriptions.Item>
-				<Descriptions.Item label="Local">{getRDO.local}</Descriptions.Item>
+				<Descriptions.Item label="Líder">{getReport.leader}</Descriptions.Item>
 				<Descriptions.Item label="Data">
-					{getRDO.dataDaProducao}
+					{getReport.report_date}
 				</Descriptions.Item>
 			</Descriptions>
 
 			<Descriptions>
 				<Descriptions.Item label="Manhã">
-					{getRDO.clima.manha}
+					{getReport.morning_weather_condition}
 				</Descriptions.Item>
 				<Descriptions.Item label="Tarde">
-					{getRDO.clima.tarde}
+					{getReport.afternoon_weather_condition}
 				</Descriptions.Item>
 			</Descriptions>
 
 			<Divider orientation={'left'}>Serviços executados</Divider>
 
 			<Table
-				dataSource={getRDO.atividades}
-				rowKey={(record) => record._id}
+				dataSource={getReport.activities}
+				rowKey={(record) => record.id}
 				columns={columnsAtividades}
 				size="small"
 				scroll={{ y: '30vh' }}
@@ -135,7 +135,7 @@ export default function RDODigital({ RDOfiltrado }) {
 			<Divider orientation={'left'}>Mão de obra</Divider>
 
 			<Table
-				dataSource={getRDO.maoDeObra}
+				dataSource={getReport.members}
 				rowKey={(record) => record._id}
 				columns={columnsMaoDeObra}
 				size="small"
@@ -145,12 +145,12 @@ export default function RDODigital({ RDOfiltrado }) {
 			<Divider orientation={'left'}>Observações</Divider>
 
 			<Alert
-				description={getRDO.observacoes}
+				description={getReport.observations}
 				type="info"
 				style={{ marginBottom: '20px' }}
 			/>
 
-			<div
+			{/* <div
 				style={{
 					display: 'grid',
 					gridTemplateColumns: ' repeat(auto-fill, 330px)',
@@ -164,7 +164,7 @@ export default function RDODigital({ RDOfiltrado }) {
 				<div style={contentStyle}>
 					<div>Foto 2</div>
 				</div>
-			</div>
+			</div> */}
 		</div>
 	)
 }

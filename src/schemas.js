@@ -28,12 +28,37 @@ export const GET_RDO = gql`
   }
 `
 
-export const GET_RDOS = gql`
-  query {
-    getRDOS {
-      _id
-      encarregado
-      dataDaProducao
+export const GET_REPORT = gql`
+    query ($id: String!) {
+      getReport(id: $id) {
+      id
+      leader
+      project
+      report_date
+      observations
+      afternoon_weather_condition
+      morning_weather_condition
+      members  {
+        description
+        end_time
+        name
+        start_time
+      }
+      activities {
+        id
+        description
+        duration
+      }
+    }
+  }
+`
+
+export const GET_REPORTS = gql`
+  query{
+    getReports {
+       id
+       report_date
+       leader
     }
   }
 `
@@ -127,36 +152,6 @@ export const CREATED_URL_SIGNED = gql`
   }
 `
 
-export const CREATE_RDO = gql`
-  mutation (
-    $id: ID
-    $projeto: String
-    $encarregado: String
-    $local: String
-    $dataDaProducao: String
-    $clima: ClimaInput
-    $maoDeObra: [MaoDeObraInput]
-    $observacoes: String
-    $atividades: [AtividadeInput]
-  ) {
-    createRDO(
-      data: {
-        id: $id
-        projeto: $projeto
-        encarregado: $encarregado
-        local: $local
-        dataDaProducao: $dataDaProducao
-        clima: $clima
-        maoDeObra: $maoDeObra
-        observacoes: $observacoes
-        atividades: $atividades
-      }
-    ) {
-      id
-    }
-  }
-`
-
 export const CREATE_REPORT = gql`
   mutation CreateReport(
     $id: String!
@@ -166,8 +161,8 @@ export const CREATE_REPORT = gql`
     $morning_weather_condition: String!
     $afternoon_weather_condition: String!
     $observations: String
-    $activities: [ActivityInput]
-    $collaborators: [CollaboratorInput]
+    $activities: [ActivityReportInput]
+    $members: [MembersInput]
   ) {
     createReport(data: {
       id: $id
@@ -178,7 +173,7 @@ export const CREATE_REPORT = gql`
       afternoon_weather_condition: $afternoon_weather_condition
       observations: $observations
       activities: $activities
-      collaborators: $collaborators
+      members: $members
     }) {
       id
     }

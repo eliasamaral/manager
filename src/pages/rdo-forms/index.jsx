@@ -16,7 +16,6 @@ import {
 } from 'antd'
 import { useState } from 'react'
 import {
-	CREATE_RDO,
 	GET_ACTIVITY,
 	GET_COLLABORATORS,
 	GET_PROJECTS,
@@ -29,30 +28,23 @@ const { TextArea } = Input
 const { Title } = Typography
 const { Option } = Select
 
-const ACTIVITIES_DATA = [
-	{
-		id: 'SPDA-001',
-		name: 'Inspeção inicial do local',
-		description: 'Inspeção inicial do local',
-	},
-]
-
 export default function FormsRDO() {
 	const [form] = Form.useForm()
-	const [activityForm, collaboratorsForm] = Form.useForm()
+	const [activityForm, membersForm] = Form.useForm()
 	const [isActivityModalOpen, setIsActivityModalOpen] = useState(false)
 	const [isCollaboratorModalOpen, setIsCollaboratorModalOpen] = useState(false)
 	const [activities, setActivities] = useState([])
-	const [collaborators, setCollaborators] = useState([])
+	const [members, setMembers] = useState([])
 
 	const { data: projectsData, loading: loadingProjects } =
 		useQuery(GET_PROJECTS)
-	const { data: collaboratorsData, loading: loadingCollaborators } =
+	const { data: membersData, loading: loadingMembers } =
 		useQuery(GET_COLLABORATORS)
 	const { data: activityData, loading: loadingActivity } =
 		useQuery(GET_ACTIVITY)
-	const [createRDO] = useMutation(CREATE_RDO)
 	const [createReport] = useMutation(CREATE_REPORT)
+
+	
 
 	const handleSubmit = async (values) => {
 		const formattedValues = {
@@ -60,18 +52,15 @@ export default function FormsRDO() {
 			id: cuid(),
 			report_date: values.report_date.format('DD/MM/YYYY'),
 			activities,
-			collaborators,
+			members,
 		}
 
 		try {
-			console.log(formattedValues)
-
 			const response = await createReport({
 				variables: formattedValues,
 			})
-			console.log('RDO created:', response)
-			//   form.resetFields();
-			//   setActivities([]);
+			form.resetFields()
+			setActivities([])
 		} catch (error) {
 			console.error('Error creating RDO:', error)
 		}
@@ -88,7 +77,7 @@ export default function FormsRDO() {
 		setActivities([...activities, { ...formattedValues }])
 		setIsActivityModalOpen(false)
 	}
-	const handleCollaboratorsSubmit = (values) => {
+	const handleMembersSubmit = (values) => {
 		const start_time = `${values.start_time.hour().toString().padStart(2, '0')}:${values.start_time.minute().toString().padStart(2, '0')}`
 		const end_time = `${values.end_time.hour().toString().padStart(2, '0')}:${values.end_time.minute().toString().padStart(2, '0')}`
 
@@ -98,18 +87,16 @@ export default function FormsRDO() {
 			end_time,
 		}
 
-		setCollaborators([...collaborators, { ...formattedValues }])
+		setMembers([...members, { ...formattedValues }])
 		setIsCollaboratorModalOpen(false)
 	}
 
 	const deleteActivity = (key) => {
-		setActivities(activities.filter((activity) => activity.key !== key))
+		setActivities(activities.filter((activity) => activity.id !== key))
 	}
 
-	const deleteCollaborator = (key) => {
-		setCollaborators(
-			collaborators.filter((collaborator) => collaborator.key !== key),
-		)
+	const deleteCollaborator = (key) => {		
+		setMembers(members.filter((member) => member.name !== key));
 	}
 
 	const activityColumns = [
@@ -117,17 +104,13 @@ export default function FormsRDO() {
 			title: 'Atividade',
 			dataIndex: 'id',
 			key: 'id',
-			render: (id) => {
-				const activity = ACTIVITIES_DATA.find((a) => a.id === id)
-				return activity ? activity.description : 'Atividade não listada'
-			},
 		},
 		{
 			title: 'Ações',
 			key: 'actions',
 			render: (_, record) => (
 				<Button
-					onClick={() => deleteActivity(record.key)}
+					onClick={() => deleteActivity(record.id)}
 					icon={<DeleteOutlined />}
 					danger
 				/>
@@ -135,7 +118,7 @@ export default function FormsRDO() {
 		},
 	]
 
-	const collaboratorsColumns = [
+	const membersColumns = [
 		{
 			title: 'Nome',
 			dataIndex: 'name',
@@ -146,7 +129,7 @@ export default function FormsRDO() {
 			key: 'actions',
 			render: (_, record) => (
 				<Button
-					onClick={() => deleteCollaborator(record.key)}
+					onClick={() => deleteCollaborator(record.name)}
 					icon={<DeleteOutlined />}
 					danger
 				/>
@@ -209,7 +192,7 @@ export default function FormsRDO() {
 								dropdownStyle={{ width: 'auto' }}
 							>
 								{projectsData?.projects.map((e) => (
-									<Option key={e._id} value={e._id}>
+									<Option key={e._id} value={`${e.location} - ${e.project}`}>
 										{e.location} - {e.project}
 									</Option>
 								))}
@@ -229,7 +212,7 @@ export default function FormsRDO() {
 								allowClear
 								dropdownStyle={{ width: 'auto' }}
 							>
-								{collaboratorsData?.collaborators.map((e) => (
+								{membersData?.collaborators.map((e) => (
 									<Option key={e._id} value={e.name}>
 										{e.name}
 									</Option>
@@ -269,12 +252,12 @@ export default function FormsRDO() {
 
 					<Divider orientation="left">Mão de obra</Divider>
 
-					{collaborators.length > 0 ? (
+					{members.length > 0 ? (
 						<Table
 							size="small"
 							rowKey={(record) => record.id}
-							dataSource={collaborators}
-							columns={collaboratorsColumns}
+							dataSource={members}
+							columns={membersColumns}
 						/>
 					) : null}
 
@@ -293,9 +276,9 @@ export default function FormsRDO() {
 						footer={null}
 					>
 						<Form
-							form={collaboratorsForm}
+							form={membersForm}
 							layout="vertical"
-							onFinish={handleCollaboratorsSubmit}
+							onFinish={handleMembersSubmit}
 						>
 							<Form.Item
 								name="name"
@@ -303,9 +286,9 @@ export default function FormsRDO() {
 								rules={[{ required: true, message: 'Selecione o colaborador' }]}
 							>
 								<Select placeholder="Selecione o colaborador" allowClear>
-									{collaboratorsData?.collaborators.map((collaborator) => (
-										<Option key={collaborator._id} value={collaborator.name}>
-											{collaborator.name}
+									{membersData?.collaborators.map((member) => (
+										<Option key={member._id} value={member.name}>
+											{member.name}
 										</Option>
 									))}
 								</Select>
@@ -367,8 +350,8 @@ export default function FormsRDO() {
 							>
 								<Select placeholder="Selecione a atividade" allowClear>
 									<Option value="not_listed">Não listada</Option>
-									{ACTIVITIES_DATA.map((activity) => (
-										<Option key={activity.id} value={activity.id}>
+									{activityData?.activities.map((activity) => (
+										<Option key={activity._id} value={activity.name}>
 											{activity.description}
 										</Option>
 									))}

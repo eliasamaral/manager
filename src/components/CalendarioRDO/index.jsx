@@ -3,21 +3,21 @@ import dayjs from 'dayjs'
 import React, { useMemo, useState } from 'react'
 import 'dayjs/locale/pt-br'
 import { useQuery } from '@apollo/client'
-import { GET_RDOS } from '../../schemas'
-import RDODigital from '../RDODigital'
+import { GET_REPORTS } from '../../schemas'
+import Reports from '../Reports'
 
 function CalendarioRDO() {
-	const [RDOselected, setRDOselected] = useState()
+	const [Reportsselected, setReportsselected] = useState()
 	const {
-		data: { getRDOS } = {},
+		data: { getReports } = {},
 		loading,
-	} = useQuery(GET_RDOS)
+	} = useQuery(GET_REPORTS)
 
-	const RDOfiltrado = useMemo(() => {
-		if (getRDOS) {
-			return getRDOS.find((objeto) => objeto._id === RDOselected)
+	const Reportsfiltrado = useMemo(() => {
+		if (getReports) {
+			return getReports.find((objeto) => objeto.id === Reportsselected)
 		}
-	}, [getRDOS, RDOselected])
+	}, [getReports, Reportsselected])
 
 	if (loading) {
 		return (
@@ -28,20 +28,22 @@ function CalendarioRDO() {
 	}
 
 	const renderCell = (date) => {
-		const matchingDateEvents = getRDOS.filter(
-			(item) => item.dataDaProducao === dayjs(date).format('DD/MM/YYYY'),
+		if (!Array.isArray(getReports)) return null
+
+		const matchingDateEvents = getReports.filter(
+			(item) => item.report_date === dayjs(date).format('DD/MM/YYYY'),
 		)
 
 		return matchingDateEvents.length > 0 ? (
 			<ul className="events">
 				{matchingDateEvents.map((item) => (
-					<li key={item._id}>
+					<li key={item.id}>
 						<Tag
 							color="#108ee9"
 							style={{ marginBottom: '5px' }}
-							onClick={() => setRDOselected(item._id)}
+							onClick={() => setReportsselected(item.id)}
 						>
-							{item.encarregado}
+							{item.leader}
 						</Tag>
 					</li>
 				))}
@@ -52,9 +54,9 @@ function CalendarioRDO() {
 	return (
 		<div style={{ display: 'flex', flexDirection: 'row' }}>
 			<Calendar className="calendar-container" cellRender={renderCell} />
-			{RDOfiltrado && (
+			{Reportsfiltrado && (
 				<Space>
-					<RDODigital RDOfiltrado={RDOfiltrado} />
+					<Reports Reportsfiltrado={Reportsfiltrado} />
 				</Space>
 			)}
 		</div>
