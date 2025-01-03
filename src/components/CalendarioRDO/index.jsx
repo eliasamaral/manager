@@ -7,17 +7,16 @@ import { GET_REPORTS } from '../../schemas'
 import Reports from '../Reports'
 
 function CalendarioRDO() {
-	const [Reportsselected, setReportsselected] = useState()
+	const [selectedReport, setSelectedReport] = useState()
 	const {
 		data: { getReports } = {},
 		loading,
 	} = useQuery(GET_REPORTS)
 
-	const Reportsfiltrado = useMemo(() => {
-		if (getReports) {
-			return getReports.find((objeto) => objeto.id === Reportsselected)
-		}
-	}, [getReports, Reportsselected])
+	const filteredReport = useMemo(
+		() => getReports?.find((report) => report.id === selectedReport),
+		[getReports, selectedReport],
+	)
 
 	if (loading) {
 		return (
@@ -34,29 +33,31 @@ function CalendarioRDO() {
 			(item) => item.report_date === dayjs(date).format('DD/MM/YYYY'),
 		)
 
-		return matchingDateEvents.length > 0 ? (
+		if (matchingDateEvents.length === 0) return null
+
+		return (
 			<ul className="events">
 				{matchingDateEvents.map((item) => (
 					<li key={item.id}>
 						<Tag
 							color="#108ee9"
 							style={{ marginBottom: '5px' }}
-							onClick={() => setReportsselected(item.id)}
+							onClick={() => setSelectedReport(item.id)}
 						>
 							{item.leader}
 						</Tag>
 					</li>
 				))}
 			</ul>
-		) : null
+		)
 	}
 
 	return (
 		<div style={{ display: 'flex', flexDirection: 'row' }}>
 			<Calendar className="calendar-container" cellRender={renderCell} />
-			{Reportsfiltrado && (
-				<Space>
-					<Reports Reportsfiltrado={Reportsfiltrado} />
+			{filteredReport && (
+				<Space style={{ marginLeft: '10px' }}>
+					<Reports reportData={filteredReport} />
 				</Space>
 			)}
 		</div>
