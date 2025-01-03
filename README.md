@@ -1,48 +1,80 @@
-## Manager
-
-### Eu só não aguentava mais aquela papelada, suja de terra, molhada, rasgada ou rasurada, isso quando entregavam.
+# Manager - Sistema de Gestão de Relatórios Digitais
 
 
-Esta aplicação foi desenvolvida para solucionar problemas relacionados à documentação e ao uso excessivo de papel.
+## 🎯 Sobre o Projeto
 
-Atualmente, está dividida em duas soluções: Manager e [RDO Digital.](https://github.com/eliasamaral/rdo-digital)
+O Manager é uma solução empresarial desenvolvida para digitalizar e otimizar o processo de gestão de relatórios diários de obra (RDO), eliminando o uso de documentação física e centralizando todas as informações em uma única plataforma.
 
-O Manager possibilita a visualização de dados coletados pelo RDO Digital, além de ser responsável por cadastrar os formulários exibidos no RDO.
+### 🌟 Principais Funcionalidades
 
-Durante o desenvolvimento, novas funcionalidades foram criadas, como o cadastro de uma carteira de obra e a visualização em mapas utilizando a API do Google Maps.
+- **Dashboard Interativo**: Visualização centralizada de todos os relatórios
+- **Calendário Digital**: Interface intuitiva para navegação temporal dos relatórios
+- **Geração Automática de PDF**: Exportação padronizada de documentos
+- **Gestão de Projetos**: CRUD completo para gerenciamento de obras
+- **Sistema de Autenticação**: Controle de acesso seguro
+- **Kanban**: Gestão visual do fluxo de trabalho (REMOVIDO)
+- **Mapa Interativo**: Visualização geográfica das obras (REMOVIDO)
 
-Também foi implementado um Kanban para visualização e controle dos status das obras.
+## 🚀 Tecnologias Utilizadas
 
-#### O problema 💀
+### Frontend
+- **React 19**: Biblioteca principal para construção da interface
+- **GraphQL + Apollo Client**: Gerenciamento eficiente de estado e comunicação com API
+- **Ant Design**: Framework UI para design system empresarial
+- **Styled Components**: Estilização componentizada
+- **JWT**: Autenticação segura
+- **React Router DOM**: Gerenciamento de rotas
+- **jsPDF**: Geração dinâmica de documentos PDF
 
-```mermaid
-flowchart TD
-    subgraph Z[" "]
-    direction LR
-    Imprimir-->|Demanda </br>tempo|Distribuir-->|Ir atrás das </br> equipes|Coletar-->|Os horários não batiam, perdas,</br> equipes alojadas </br> por semanas em </br>outra cidade|Analisar-->|Papel danificado, molhado, </br>sujo, rasurado, etc..|Arquivar;
-    end
-```
+### Backend
+- **GraphQL**: API robusta e flexível
+- **MongoDB**: Banco de dados NoSQL escalável
+- **JWT**: Segurança e autenticação
 
+### DevOps
+- **Vite**: Build tool moderna e eficiente
+- **ESLint + Biome**: Padronização e qualidade de código
+- **Vercel**: Deploy e hospedagem
 
-Como vê, muitos problemas naturais de que ainda têm processos utilizando papel.
+## 💼 Caso de Uso Empresarial
 
-#### A solução 
+O Manager foi desenvolvido para resolver problemas reais enfrentados por empresas de construção civil:
 
-Desenvolvimento do RDO Digital, um formulário digital que gera PDFs para serem enviados ao escritório.
+- Redução de 100% no uso de papel
+- Eliminação de perda de documentos
+- Acesso instantâneo às informações
+- Padronização dos relatórios
 
-![RDO Digital](./assets/RDO.png)
+## 🌱 Evolução do Projeto
 
-O Manager entra como um CRUD, interface um backoff para o cadastro das obras e visualizar os relatórios gerados além dos PDFs.
+O sistema cresceu organicamente, adicionando funcionalidades conforme as necessidades do negócio:
 
-### Crecimento
-
-Hoje a aplicação cresceu com novas funcionalidades: uma tela de login, Kanban e a última funcionalidade é um mapa para visualização do local das obras.
-
-Utilizando uma API feita em GraphQL com um banco MongoDB, ainda tenho grandes desafios. Implementação de informações em tempo real, controle de permissões entre outras funcionalidades que já estão anotadas em algum papel por aqui.
-
-![Mapa](./assets/Mapa.png)
-![Kanban](./assets/Kanban.png)
+![Mapa](./assets/Mapa.png) (REMOVIDO)
+![Kanban](./assets/Kanban.png) (REMOVIDO)
 ![Relatorio](./assets/Relatorio.png)
 ![Login](./assets/login.png)
+
+### Próximos Passos
+- Sistema avançado de permissões
+- Integração com outros sistemas empresariais
+- Analytics e Business Intelligence
+- Upload de arquivos
+
+## 🔧 Arquitetura
+
+O projeto segue as melhores práticas de desenvolvimento:
+
+- **Context API**: Gerenciamento de estado global
+- **Custom Hooks**: Reutilização de lógica
+- **Componentes Modulares**: Alta reusabilidade
+- **Design Responsivo**: Adaptável a diferentes dispositivos
+
+
+## 📫 Contato
+
+Para mais informações sobre implementação empresarial ou parcerias, entre em contato:
+
+- Email: [eliasseverianoamaral@gmail.com]
+- LinkedIn: [https://www.linkedin.com/in/elias-amaral-594409199/]
 
 
