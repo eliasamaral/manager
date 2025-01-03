@@ -6,14 +6,7 @@ import { GET_REPORT } from '../../schemas'
 
 import { exportPDF } from '../../utility/exportPDF'
 
-const contentStyle = {
-	width: '330px',
-	height: '200px',
-	color: '#fff',
-	lineHeight: '160px',
-	textAlign: 'center',
-	background: '#364d79',
-}
+// Removido contentStyle pois não está sendo utilizado no componente
 const columnsAtividades = [
 	{
 		title: 'Atividade',
@@ -58,8 +51,8 @@ const columnsMaoDeObra = [
 	},
 ]
 
-export default function Reports({ Reportsfiltrado }) {
-	const { id } = Reportsfiltrado
+export default function Reports({ reportData }) {
+	const { id } = reportData
 
 	const { loading, data } = useQuery(GET_REPORT, {
 		variables: { id },
