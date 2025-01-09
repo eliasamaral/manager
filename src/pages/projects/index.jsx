@@ -7,11 +7,9 @@ import { Button, Modal, Table } from 'antd'
 
 import {
 	CREATED_PROJECT,
-	DELETE_COLLABORATOR,
 	DELETE_PROJECT,
-	GET_ACTIVITY,
-	GET_PROJECTS,
-} from '../../schemas'
+} from '../../graphql/mutations'
+import { GET_ACTIVITY, GET_PROJECTS } from '../../graphql/queries'
 
 const styles = {
 	input: {

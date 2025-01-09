@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 
 import CalendarioRDO from '../../components/CalendarioRDO'
 
-function RDO() {
+function ReportDashboard() {
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const showModal = () => {
 		setIsModalOpen(true)
@@ -42,4 +42,4 @@ function RDO() {
 	)
 }
 
-export default RDO
+export default ReportDashboard

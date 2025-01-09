@@ -16,11 +16,10 @@ import {
 } from 'antd'
 import { useState } from 'react'
 import {
-	GET_ACTIVITY,
-	GET_COLLABORATORS,
-	GET_PROJECTS,
+	
 	CREATE_REPORT,
-} from '../../schemas'
+} from '../../graphql/mutations'
+import { GET_ACTIVITY, GET_COLLABORATORS, GET_PROJECTS } from '../../graphql/queries'
 import 'dayjs/locale/pt-br'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 
@@ -76,9 +75,9 @@ export default function FormsRDO() {
 			const response = await createReport({
 				variables: formattedValues,
 			})
-			form.resetFields()
-			setActivities([])
-			setMembers([])
+			// form.resetFields()
+			// setActivities([])
+			// setMembers([])
 			openSuccessNotification()
 		} catch (error) {
 			console.error('Error creating RDO:', error)
@@ -230,7 +229,7 @@ export default function FormsRDO() {
 							<Select
 								placeholder="Líder"
 								allowClear
-								dropdownStyle={{ width: 'auto' }}
+								dropdownStyle={{ width: '50%' }}
 							>
 								{membersData?.collaborators.map((e) => (
 									<Option key={e._id} value={e.name}>

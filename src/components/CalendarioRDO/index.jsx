@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 import React, { useMemo, useState } from 'react'
 import 'dayjs/locale/pt-br'
 import { useQuery } from '@apollo/client'
-import { GET_REPORTS } from '../../schemas'
+import { GET_REPORTS } from '../../graphql/queries'
 import Reports from '../Reports'
 
 function CalendarioRDO() {
