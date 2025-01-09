@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/react-hooks'
 import { Button, Form, Input, Typography } from 'antd'
 import React, { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {  LOGIN_USER_EMAIL } from '../../graphql/mutations'
+import { LOGIN_USER_EMAIL } from '../../graphql/mutations'
 import { AuthContext } from '../../utility/context/authContext'
 import { useForm } from '../../utility/hooks'
 
