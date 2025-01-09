@@ -6,8 +6,8 @@ import { AuthProvider } from './utility/context/authContext'
 
 import { GlobalStyle } from './GlobalStyle'
 
-import Tamplate from './components/Tamplate'
-import RDO from './pages/RDO'
+import Template from './components/Template'
+import ReportDashboard from './pages/ReportDashboard'
 import Login from './pages/login'
 import Projects from './pages/projects'
 import FormsRDO from './pages/rdo-forms'
@@ -20,10 +20,10 @@ function App() {
 				<GlobalStyle />
 				<Routes>
 					<Route element={<PrivateRoute />}>
-						<Route element={<Tamplate />}>
-							<Route path="/" element={<RDO />} />
+						<Route element={<Template />}>
+							<Route path="/" element={<ReportDashboard />} />
 							<Route path="/projetos" element={<Projects />} />
-							<Route path="/configurações" element={<Setting />} />
+							<Route path="/configuracoes" element={<Setting />} />
 						</Route>
 					</Route>
 					<Route path="/login" element={<Login />} />
