@@ -5,10 +5,7 @@ import { useForm } from 'react-hook-form'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 import { Button, Modal, Table } from 'antd'
 
-import {
-	CREATED_PROJECT,
-	DELETE_PROJECT,
-} from '../../graphql/mutations'
+import { CREATED_PROJECT, DELETE_PROJECT } from '../../graphql/mutations'
 import { GET_ACTIVITY, GET_PROJECTS } from '../../graphql/queries'
 
 const styles = {

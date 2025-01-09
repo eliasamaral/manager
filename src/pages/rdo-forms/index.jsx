@@ -1,7 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client'
-import cuid from 'cuid'
 import {
-	notification,
 	Button,
 	DatePicker,
 	Divider,
@@ -13,13 +11,16 @@ import {
 	Table,
 	TimePicker,
 	Typography,
+	notification,
 } from 'antd'
+import cuid from 'cuid'
 import { useState } from 'react'
+import { CREATE_REPORT } from '../../graphql/mutations'
 import {
-	
-	CREATE_REPORT,
-} from '../../graphql/mutations'
-import { GET_ACTIVITY, GET_COLLABORATORS, GET_PROJECTS } from '../../graphql/queries'
+	GET_ACTIVITY,
+	GET_COLLABORATORS,
+	GET_PROJECTS,
+} from '../../graphql/queries'
 import 'dayjs/locale/pt-br'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 
@@ -44,7 +45,6 @@ const openErrorNotification = () => {
 		duration: 7,
 	})
 }
-
 
 export default function FormsRDO() {
 	const [form] = Form.useForm()
