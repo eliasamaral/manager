@@ -7,9 +7,8 @@ import {
 	CREATED_COLLABORATOR,
 	DELETE_ACTIVITY,
 	DELETE_COLLABORATOR,
-	GET_ACTIVITY,
-	GET_COLLABORATORS,
-} from '../../schemas'
+} from '../../graphql/mutations'
+import { GET_ACTIVITY, GET_COLLABORATORS } from '../../graphql/queries'
 
 const FormAtividade = ({ visivel, aoFechar, aoEnviar }) => (
 	<Drawer title="Adicionar nova atividade" onClose={aoFechar} open={visivel}>

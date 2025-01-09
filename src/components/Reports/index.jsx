@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client'
 import { Button, Descriptions, Divider, Space, Spin, Table } from 'antd'
 import Alert from 'antd/es/alert/Alert'
 import React from 'react'
-import { GET_REPORT } from '../../schemas'
+import { GET_REPORT } from '../../graphql/queries'
 
 import { exportPDF } from '../../utility/exportPDF'
 

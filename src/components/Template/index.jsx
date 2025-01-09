@@ -14,7 +14,7 @@ import {
 const { Content, Sider } = Layout
 const { Title } = Typography
 
-function Tamplate() {
+function Template() {
 	const {
 		token: { colorBgContainer },
 	} = theme.useToken()
@@ -59,7 +59,7 @@ function Tamplate() {
 						},
 						{
 							label: 'Ajustes',
-							key: '/configurações',
+							key: '/configuracoes',
 							icon: <SettingOutlined />,
 						},
 					]}
@@ -92,4 +92,4 @@ function Tamplate() {
 	)
 }
 
-export default Tamplate
+export default Template
